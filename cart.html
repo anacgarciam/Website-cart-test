@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main>
+        <h2>Your shopping cart</h2>
+        <section>
+            <p>Here's the <a href="shop.html">link to the webshop</a>.</p>
+        </section>
+        <section>
+            <div id="cart-items"></div>
+            <p id="total"></p>
+        </section>
+        <button id="checkout-btn">Proceed to Checkout</button>
+    </main>
+
+
+
+    <script src="cart.js"></script>
+
+<script type="module">
+document.getElementById('checkout-btn').addEventListener('click', async () => {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  try {
+    // Save cart to Firestore
+    await addDoc(collection(db, "orders"), {
+      timestamp: new Date().toISOString(),
+      cart: cart
+    });
+
+    alert("Your order has been saved!");
+    localStorage.removeItem('cart');
+    window.location.reload();
+  } catch (e) {
+    console.error("Error saving order:", e);
+    alert("Sorry, something went wrong.");
+  }
+});
+</script>
+
+<!-- Firebase SDKs -->
+    <script type="module">
+  // Import Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+  // Your Firebase configuration (replace with your own)
+  const firebaseConfig = {
+    apiKey: "AIzaSyD4pDzJGGCP2NHYuTPCv7nXS9Lx3UWPpJs",
+    authDomain: "shop-experiment-f61ed.firebaseapp.com",
+    projectId: "shop-experiment-f61ed",
+    storageBucket: "shop-experiment-f61ed.firebasestorage.app",
+    messagingSenderId: "158247201341",
+    appId: "1:158247201341:web:04c24dde5cbeab19db1854"
+  };
+
+ 
+    // --- Initialize Firebase ---
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // --- Cart logic ---
+    function getCart() {
+      return JSON.parse(localStorage.getItem('cart')) || [];
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const cartContainer = document.getElementById('cart-items');
+      const totalEl = document.getElementById('total');
+      cartContainer.innerHTML = '';
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+        totalEl.textContent = '';
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <strong>${item.name}</strong> — €${item.price.toFixed(2)} × ${item.quantity}
+          = €${itemTotal.toFixed(2)}
+          <button class="minus" data-index="${index}">−</button>
+          <button class="plus" data-index="${index}">+</button>
+          <button class="remove" data-index="${index}">Remove</button>
+        `;
+        cartContainer.appendChild(div);
+      });
+
+      totalEl.textContent = `Total: €${total.toFixed(2)}`;
+    }
+
+    function removeItem(index) {
+      const cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function changeQuantity(index, delta) {
+      const cart = getCart();
+      cart[index].quantity = Math.max(1, cart[index].quantity + delta);
+      saveCart(cart);
+      renderCart();
+    }
+
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove')) removeItem(e.target.dataset.index);
+      if (e.target.classList.contains('minus')) changeQuantity(e.target.dataset.index, -1);
+      if (e.target.classList.contains('plus')) changeQuantity(e.target.dataset.index, 1);
+    });
+
+    renderCart();
+
+    // --- 🔹 Checkout button logic ---
+    const checkoutBtn = document.getElementById('checkout-btn');
+    checkoutBtn.addEventListener('click', async () => {
+      const cart = getCart();
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "orders"), {
+          timestamp: new Date().toISOString(),
+          cart: cart
+        });
+        alert('Order saved successfully!');
+        localStorage.removeItem('cart');
+        renderCart();
+      } catch (e) {
+        console.error("Error saving order:", e);
+        alert('Error saving order.');
+      }
+    });
+  </script>
+  </body>
+</html>

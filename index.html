@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Welcome to the Webshop Experiment</h1>
+    <p>Instructions: You will be taken to a webshop. Please explore and complete a purchase if you wish.</p>
+    <button id="start-btn">Start Experiment</button>
+
+  <script>
+  document.getElementById('start-btn').addEventListener('click', () => {
+    const versions = ['shopA.html', 'shopB.html', 'shopC.html', 'shopD.html'];
+    const chosen = versions[Math.floor(Math.random() * versions.length)];
+    localStorage.setItem('shopVersion', chosen); // store which one they got
+    window.location.href = 'versions/' + chosen;
+  });
+  </script>
+</body>
+</html>
