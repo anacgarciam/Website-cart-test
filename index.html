@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HTML 5 Boilerplate</title>
+    <script src="/js/cart.js"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="js/version.js"></script>
   </head>
   <body>
     <h1>Welcome to the Webshop Experiment</h1>
@@ -20,5 +22,11 @@
     window.location.href = 'versions/' + chosen;
   });
   </script>
+  <script>
+  document.getElementById('start-btn').addEventListener('click', () => {
+  const chosen = assignShopVersion();
+  window.location.href = 'versions/' + chosen;
+  });
+</script>
 </body>
 </html>
