@@ -13,9 +13,9 @@
   <p class="small" id="deleteStatus"></p>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { db } from "js/firebase.js";
     import { getFirestore, collection, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-    import { firebaseConfig } from "../firebase.js"; // adjust path if this file is in /versions/
+    import { firebaseConfig } from "js/firebase.js"; // adjust path if this file is in /versions/
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);

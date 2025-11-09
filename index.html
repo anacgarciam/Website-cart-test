@@ -36,7 +36,9 @@
   document.getElementById('start-btn').addEventListener('click', () => {
     const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif.html', 'degknalnqgm.html'];
     const chosen = versions[Math.floor(Math.random() * versions.length)];
-    localStorage.setItem('shopVersion', chosen); // store which one they got
+    const sessionId = 'session_' + Math.random().toString(36).substring(2, 10); //generate an ID, I guess
+    localStorage.setItem('shopVersion', chosen); // store which version they got
+    localStorage.setItem('sessionId', sessionId); // store which session ID they got
     window.location.href = 'versions/' + chosen;
   });
   </script>
