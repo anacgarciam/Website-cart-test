@@ -14,7 +14,13 @@
 
   <script type="module">
     import { db } from "./js/firebase.js";
-    import { collection, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+    import {
+      collection,
+      query,
+      where,
+      getDocs,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
     const deleteBtn = document.getElementById('deleteBtn');
     const statusText = document.getElementById('deleteStatus');
