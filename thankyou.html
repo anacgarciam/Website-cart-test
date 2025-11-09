@@ -13,44 +13,39 @@
   <p class="small" id="deleteStatus"></p>
 
   <script type="module">
-    import { db } from "js/firebase.js";
-    import { getFirestore, collection, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-    import { firebaseConfig } from "js/firebase.js"; // adjust path if this file is in /versions/
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    import { db } from "./js/firebase.js";
+    import { collection, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
     const deleteBtn = document.getElementById('deleteBtn');
     const statusText = document.getElementById('deleteStatus');
 
     deleteBtn.addEventListener('click', async () => {
-      const sessionId = localStorage.getItem('sessionId');
+    const sessionId = localStorage.getItem('sessionId');
+    console.log("Delete button clicked");
+    console.log("Session ID:", sessionId);
 
-      if (!sessionId) {
-        statusText.textContent = "No session data found. It may have already been deleted.";
-        return;
+    if (!sessionId) {
+      statusText.textContent = "No session data found. It may have already been deleted.";
+      return;
+    }
+
+    try {
+      const collections = ['events', 'orders']; // adjust to your Firestore collections
+      for (const col of collections) {
+        const q = query(collection(db, col), where("sessionId", "==", sessionId));
+        const snapshot = await getDocs(q);
+        const deletions = [];
+        snapshot.forEach(doc => deletions.push(deleteDoc(doc.ref)));
+        await Promise.all(deletions);
       }
 
-      try {
-        const collections = ['events', 'orders']; // adjust depending on your setup
-
-        for (const col of collections) {
-          const q = query(collection(db, col), where("sessionId", "==", sessionId));
-          const snapshot = await getDocs(q);
-          const deletions = [];
-          snapshot.forEach(doc => deletions.push(deleteDoc(doc.ref)));
-          await Promise.all(deletions);
-        }
-
-        statusText.textContent = "✅ Your data has been permanently deleted. Thank you again for participating.";
-        localStorage.clear();
-
-      } catch (error) {
-        console.error("Error deleting data:", error);
-        statusText.textContent = "⚠️ An error occurred while deleting your data. Please try again later.";
-      }
-    });
-  </script>
+      statusText.textContent = "✅ Your data has been permanently deleted. Thank you again for participating.";
+      localStorage.clear();
+    } catch (error) {
+      console.error("Error deleting data:", error);
+      statusText.textContent = "⚠️ An error occurred while deleting your data. Please try again later.";
+    }
+  });
+</script>
 </body>
 </html>
