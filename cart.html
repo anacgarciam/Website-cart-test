@@ -34,13 +34,14 @@
     const endTime = Date.now();
     const timeSpent = Math.round((endTime - startTime) / 1000); // seconds
 
-    try {
-      await addDoc(collection(db, "orders"), {
-        timestamp: new Date().toISOString(),
-        cart: cart,
-        shopVersion: shopVersion,
-        timeSpent: timeSpent
-      });
+  try {
+    await addDoc(collection(db, "orders"), {
+      sessionId: localStorage.getItem("sessionId"),   // ✅ REQUIRED
+      shopVersion: localStorage.getItem("shopVersion"),
+      timestamp: new Date().toISOString(),
+      cart: cart,
+      timeSpent: timeSpent
+    });
 
       alert('✅ Order submitted successfully!');
       localStorage.removeItem('cart');
