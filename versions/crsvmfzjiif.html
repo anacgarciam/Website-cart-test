@@ -10,12 +10,30 @@
   </head>
   <body>
     <main>
+      <a href="../cart.html">See my cart</a>
         <section>
-            <h2><a href="Website-cart-test/products/coat1.html">Warm coat</a></h2>
-            <p><a href="/products/coat1.html">The warmest coat ever!</a></p>
-            <price><a href="/products/coat1.html">189.99 $</a></price>
+          <div id="product-list"></div>
         </section>
+        <div id="product-list"></div>
     </main>
-    <script src="cart.js"></script>
+    <script src="js/cart.js"></script>
+    <script> // Load products dynamically from products.json
+      fetch('../products.json')
+        .then(res => res.json())
+        .then(products => {
+          const container = document.getElementById('product-list');
+          products.forEach(p => {
+            const item = document.createElement('div');
+            item.classList.add('product');
+            item.innerHTML = `
+              <img src="${p.image}" alt="${p.name}" width="150">
+              <h3>${p.name}</h3>
+              <p>€${p.price.toFixed(2)}</p>
+            <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})">Add to cart</button>
+          `;
+          container.appendChild(item);
+        });
+      });
+      </script>
   </body>
 </html>

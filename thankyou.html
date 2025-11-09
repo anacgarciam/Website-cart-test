@@ -4,5 +4,53 @@
 <body>
   <h1>Thank you for your participation!</h1>
   <p>Your order has been recorded.</p>
+  <p>Debrief participants after their session (e.g., a thankyou.html page that explains the purpose and that some manipulations were intentionally deceptive). Offer opt-out (delete their data) at that time.</p>
+  <h2>Delete My Data</h2>
+  <p>If you wish to withdraw your data from the study, you can delete all information associated with your anonymous session.
+    This will remove all your records from our research database permanently.</p>
+
+  <button id="deleteBtn">Delete My Data</button>
+  <p class="small" id="deleteStatus"></p>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+    import { firebaseConfig } from "../firebase.js"; // adjust path if this file is in /versions/
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const deleteBtn = document.getElementById('deleteBtn');
+    const statusText = document.getElementById('deleteStatus');
+
+    deleteBtn.addEventListener('click', async () => {
+      const sessionId = localStorage.getItem('sessionId');
+
+      if (!sessionId) {
+        statusText.textContent = "No session data found. It may have already been deleted.";
+        return;
+      }
+
+      try {
+        const collections = ['events', 'orders']; // adjust depending on your setup
+
+        for (const col of collections) {
+          const q = query(collection(db, col), where("sessionId", "==", sessionId));
+          const snapshot = await getDocs(q);
+          const deletions = [];
+          snapshot.forEach(doc => deletions.push(deleteDoc(doc.ref)));
+          await Promise.all(deletions);
+        }
+
+        statusText.textContent = "✅ Your data has been permanently deleted. Thank you again for participating.";
+        localStorage.clear();
+
+      } catch (error) {
+        console.error("Error deleting data:", error);
+        statusText.textContent = "⚠️ An error occurred while deleting your data. Please try again later.";
+      }
+    });
+  </script>
 </body>
 </html>
