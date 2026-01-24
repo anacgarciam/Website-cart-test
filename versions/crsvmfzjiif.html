@@ -1,39 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Shop (Control)</title>
+    <link rel="stylesheet" href="../style.css"/>
     <script src="../js/cart.js"></script>
   </head>
+
   <body>
     <main>
       <a href="../cart.html">See my cart</a>
-        <section>
-          <div id="product-list"></div>
-        </section>
+
+      <section id="intro">
+        <h1>Super value deals</h1>
+        <p>Save more with coupons & up to 70% off!</p>
+      </section>
+
+      <section>
         <div id="product-list"></div>
+      </section>
+
+      <!-- Pagination controls -->
+      <div class="pagination">
+        <button id="prevBtn" type="button">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn" type="button">Next</button>
+      </div>
     </main>
-    <script src="../js/cart.js"></script>
-    <script> // Load products dynamically from products.json
-      fetch('../products.json')
-        .then(res => res.json())
-        .then(products => {
-          const container = document.getElementById('product-list');
-          products.forEach(p => {
-            const item = document.createElement('div');
-            item.classList.add('product');
-            item.innerHTML = `
-              <img src="${p.image}" alt="${p.name}" width="150">
-              <h3>${p.name}</h3>
-              <p>€${p.price.toFixed(2)}</p>
-            <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})">Add to cart</button>
+
+    <script>
+      // --- Pagination settings ---
+      let currentPage = 1;
+      const productsPerPage =9; // change this to 6/8 if you want
+      let allProducts = [];
+
+      // Load products dynamically from products.json
+      fetch("../products.json")
+        .then((res) => res.json())
+        .then((products) => {
+          allProducts = products;
+          renderPage();
+        })
+        .catch((err) => {
+          console.error("Failed to load products.json:", err);
+          const container = document.getElementById("product-list");
+          container.innerHTML = "<p>Sorry, products could not be loaded.</p>";
+        });
+
+      function renderPage() {
+        const container = document.getElementById("product-list");
+        container.innerHTML = "";
+
+        const totalPages = Math.ceil(allProducts.length / productsPerPage);
+        const start = (currentPage - 1) * productsPerPage;
+        const end = start + productsPerPage;
+        const pageProducts = allProducts.slice(start, end);
+
+        pageProducts.forEach((p) => {
+          const item = document.createElement("div");
+          item.classList.add("product");
+          item.innerHTML = `
+            <a href="${p.detailPage}">
+              <img src="${p.image}" alt="${p.name}">
+            </a>
+            <h3>${p.name}</h3>
+            <p>€${p.price}</p>
+            <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})">
+              Add to cart
+            </button>
           `;
           container.appendChild(item);
         });
+
+        // Update UI state
+        document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
+        document.getElementById("prevBtn").disabled = currentPage <= 1;
+        document.getElementById("nextBtn").disabled = currentPage >= totalPages;
+      }
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        const totalPages = Math.ceil(allProducts.length / productsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderPage();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       });
-      </script>
+
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderPage();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    </script>
   </body>
 </html>

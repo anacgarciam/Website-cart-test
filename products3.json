@@ -1,0 +1,6 @@
+[
+  { "id": 1, "name": "Blue T-Shirt", "price": 19.99, "image": "../img/blue-shirt.jpg" },
+  { "id": 2, "name": "Green Hoodie", "price": 34.50, "image": "../img/green-hoodie.jpg" },
+  { "id": 3, "name": "Red Sneakers", "price": 59.00, "image": "../img/red-sneakers.jpg" },
+  { "id": 4, "name": "Black Jeans", "price": 45.00, "image": "../img/black-jeans.jpg" }
+]
