@@ -70,3 +70,24 @@ h4 {
   display: block;
   margin: 0 auto 12px;
 }
+
+/*Product detail page */
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.product-detail-img {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.product-detail-info .price {
+  font-size: 1.2rem;
+  font-weight: 700;
+}

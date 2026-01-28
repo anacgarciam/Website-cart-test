@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product</title>
+
+  <!-- Adjust if your CSS is elsewhere -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Cart logic -->
+  <script src="js/cart.js"></script>
+</head>
+<body>
+  <main class="container">
+    <a href="cart.html">🛒 View cart</a> |
+    <a href="versions/crsvmfzjiif.html">← Back to shop</a>
+
+    <div id="product" style="margin-top: 20px;"></div>
+  </main>
+
+  <script>
+    // Get product id from URL, e.g. product.html?id=14
+    const params = new URLSearchParams(window.location.search);
+    const id = Number(params.get("id"));
+
+    if (!id) {
+      document.getElementById("product").innerHTML = "<p>Missing product id.</p>";
+      throw new Error("Missing product id in URL");
+    }
+
+    // Load products
+    fetch("products.json")
+      .then(res => res.json())
+      .then(products => {
+        const p = products.find(x => Number(x.id) === id);
+
+        if (!p) {
+          document.getElementById("product").innerHTML = "<p>Product not found.</p>";
+          return;
+        }
+
+        document.title = p.name;
+
+        document.getElementById("product").innerHTML = `
+          <div class="product-detail">
+            <img class="product-detail-img/">
+            <img class="product-detail-img" src="${p.image}" alt="${p.name}">
+            <div class="product-detail-info">
+              <h1>${p.name}</h1>
+              <p class="price">€${Number(p.price).toFixed(2)}</p>
+              <p>${p.shortDesc || ""}</p>
+              <p><small>Rating: ${p.rating ?? "—"} (${p.reviews ?? 0} reviews)</small></p>
+
+              <button onclick="addToCart(${p.id}, ${JSON.stringify(p.name)}, ${Number(p.price)})">
+                Add to cart
+              </button>
+            </div>
+          </div>
+        `;
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("product").innerHTML = "<p>Could not load product.</p>";
+      });
+  </script>
+</body>
+</html>

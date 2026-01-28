@@ -62,12 +62,12 @@
           const item = document.createElement("div");
           item.classList.add("product");
           item.innerHTML = `
-            <a href="${p.detailPage}">
-              <img src="${p.image}" alt="${p.name}">
+            <a href="../product.html?id=${p.id}">
+              <img src="../${p.image}" alt="${p.name}">
             </a>
             <h3>${p.name}</h3>
-            <p>€${p.price}</p>
-            <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})">
+            <p>€${Number(p.price).toFixed(2)}</p>
+            <button onclick="addToCart(${p.id}, ${JSON.stringify(p.name)}, ${Number(p.price)})">
               Add to cart
             </button>
           `;
