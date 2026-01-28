@@ -62,14 +62,15 @@
           const item = document.createElement("div");
           item.classList.add("product");
 
-          item.innerHTML = [
-            `<a href="../product.html?id=${p.id}">`,
-            `<img src="../${p.image}" alt="${p.name}">`,
-            `</a>`,
-            `<h3>${p.name}</h3>`,
-            `<p>€${Number(p.price).toFixed(2)}</p>`,
-            `<button onclick="addToCart(${p.id}, ${JSON.stringify(p.name)}, ${Number(p.price)})">Add to cart</button>`
-          ].join("");
+        item.innerHTML = [
+          `<a href="../product.html?id=${p.id}">`,
+          `<img src="../${p.image}" alt="${p.name}">`,
+          `</a>`,
+          `<h3>${p.name}</h3>`,
+          `<p>€${Number(p.price).toFixed(2)}</p>`,
+          `<button type="button" class="add-to-cart" data-id="${p.id}" data-name="${encodeURIComponent(p.name)}" data-price="${Number(p.price)}">Add to cart</button>`
+        ].join("");
+
 
           container.appendChild(item);
         });
@@ -97,6 +98,19 @@
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });
+
+      document.getElementById("product-list").addEventListener("click", (e) => {
+        const btn = e.target.closest(".add-to-cart");
+        if (!btn) return;
+
+        const id = Number(btn.dataset.id);
+        const name = decodeURIComponent(btn.dataset.name);
+        const price = Number(btn.dataset.price);
+
+        // cart.js defines window.addToCart
+        window.addToCart(id, name, price);
+      });
+
     </script>
   </body>
 </html>

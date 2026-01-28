@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Product</title>
 
-  <!-- Adjust if your CSS is elsewhere -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Cart logic -->
   <script src="js/cart.js" defer></script>
 </head>
 <body>
@@ -20,7 +17,6 @@
   </main>
 
   <script>
-    // Get product id from URL, e.g. product.html?id=14
     const params = new URLSearchParams(window.location.search);
     const id = Number(params.get("id"));
 
@@ -29,7 +25,6 @@
       throw new Error("Missing product id in URL");
     }
 
-    // Load products
     fetch("products.json")
       .then(res => res.json())
       .then(products => {
@@ -51,12 +46,24 @@
               <p>${p.shortDesc || ""}</p>
               <p><small>Rating: ${p.rating ?? "—"} (${p.reviews ?? 0} reviews)</small></p>
 
-              <button onclick="addToCart(${p.id}, ${JSON.stringify(p.name)}, ${Number(p.price)})">
-                Add to cart
-              </button>
+              <button id="addBtn" type="button"
+                data-id="${p.id}"
+                data-name="${encodeURIComponent(p.name)}"
+                data-price="${Number(p.price)}"
+              >Add to cart</button>
             </div>
           </div>
         `;
+
+        // Attach AFTER the button exists
+        document.getElementById("addBtn").addEventListener("click", (e) => {
+          const btn = e.currentTarget;
+          window.addToCart(
+            Number(btn.dataset.id),
+            decodeURIComponent(btn.dataset.name),
+            Number(btn.dataset.price)
+          );
+        });
       })
       .catch(err => {
         console.error(err);
