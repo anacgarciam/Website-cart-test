@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="style.css" />
 
   <!-- Cart logic -->
-  <script src="js/cart.js"></script>
+  <script src="js/cart.js" defer></script>
 </head>
 <body>
   <main class="container">
@@ -44,7 +44,6 @@
 
         document.getElementById("product").innerHTML = `
           <div class="product-detail">
-            <img class="product-detail-img/">
             <img class="product-detail-img" src="${p.image}" alt="${p.name}">
             <div class="product-detail-info">
               <h1>${p.name}</h1>
