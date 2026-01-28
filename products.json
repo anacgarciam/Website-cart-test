@@ -84,16 +84,11 @@
     "detailPage": "../products/snacks-pack.html"
   },
   {
-    "id": 9,
-    "name": "Shipping Protection",
-    "price": 2.49,
-    "image": "../img/shipping-protection.jpg",
-    "category": "service",
-    "tags": ["addon"],
-    "rating": 4.0,
-    "reviews": 38,
-    "shortDesc": "Optional coverage for loss/damage in transit.",
-    "detailPage": null
+  "id": 28,
+  "name": "Boot Care & Waterproofing Spray",
+  "price": 12.99,
+  "image": "media/products/accessories/boot-spray.jpg",
+  "detailPage": "products/boot-care-spray.html"
   },
 {
   "id": 10,
