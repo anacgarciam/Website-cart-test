@@ -31,6 +31,14 @@
     </main>
 
     <script>
+      function incMetric(key) {
+        const n = Number(localStorage.getItem(key) || 0);
+        localStorage.setItem(key, String(n + 1));
+      }
+      function setBool(key, value) {
+        localStorage.setItem(key, value ? "true" : "false");
+      }
+
       // --- Pagination settings ---
       let currentPage = 1;
       const productsPerPage =9; // change this to 6/8 if you want
@@ -54,6 +62,7 @@
         container.innerHTML = "";
 
         const totalPages = Math.ceil(allProducts.length / productsPerPage);
+        if (currentPage >= 2) setBool("reachedPage2", true);
         const start = (currentPage - 1) * productsPerPage;
         const end = start + productsPerPage;
         const pageProducts = allProducts.slice(start, end);
@@ -85,6 +94,7 @@
       document.getElementById("nextBtn").addEventListener("click", () => {
         const totalPages = Math.ceil(allProducts.length / productsPerPage);
         if (currentPage < totalPages) {
+          incMetric("paginationNextCount");   // ✅ add
           currentPage++;
           renderPage();
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -93,6 +103,7 @@
 
       document.getElementById("prevBtn").addEventListener("click", () => {
         if (currentPage > 1) {
+          incMetric("paginationPrevCount");   // ✅ add
           currentPage--;
           renderPage();
           window.scrollTo({ top: 0, behavior: "smooth" });

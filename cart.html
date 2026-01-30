@@ -18,39 +18,63 @@
 
   <!-- Firebase and Firestore imports -->
   <script type="module">
-  import { db } from './js/firebase.js';
-  import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+    import { db } from './js/firebase.js';
+    import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-  // --- Time tracking ---
-  const startTime = Date.now();
+    // Render cart UI (from cart.js)
+    window.renderCart();
 
-  // Render the cart from localStorage (from cart.js)
-  renderCart();
+    document.getElementById('checkout-btn').addEventListener('click', async () => {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-  // Checkout button click
-  document.getElementById('checkout-btn').addEventListener('click', async () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const shopVersion = localStorage.getItem('shopVersion') || 'unknown';
-    const endTime = Date.now();
-    const timeSpent = Math.round((endTime - startTime) / 1000); // seconds
+    const sessionId = localStorage.getItem("sessionId") || "missing_session";
+    const shopVersion = localStorage.getItem("shopVersion") || "unknown";
 
-  try {
-    await addDoc(collection(db, "orders"), {
-      sessionId: localStorage.getItem("sessionId"),   // ✅ REQUIRED
-      shopVersion: localStorage.getItem("shopVersion"),
-      timestamp: new Date().toISOString(),
-      cart: cart,
-      timeSpent: timeSpent
-    });
+    const startMs = Number(localStorage.getItem("sessionStartMs") || Date.now());
+    const timeSpentSeconds = Math.round((Date.now() - startMs) / 1000);
+
+    const cartTotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    const cartItemCount = cart.reduce((sum, i) => sum + i.quantity, 0);
+    const cartDistinctItems = cart.length;
+
+    // ✅ Task success (TrailStride Hiking Boots is id 1)
+    const TARGET_ID = 1;
+    const targetPurchased = cart.some(item => Number(item.id) === TARGET_ID);
+
+    // ✅ Pagination + product views (from localStorage)
+    const productDetailViewsCount = Number(localStorage.getItem("productDetailViewsCount") || 0);
+    const paginationNextCount = Number(localStorage.getItem("paginationNextCount") || 0);
+    const paginationPrevCount = Number(localStorage.getItem("paginationPrevCount") || 0);
+    const reachedPage2 = (localStorage.getItem("reachedPage2") === "true");
+
+    try {
+      await addDoc(collection(db, "orders"), {
+        sessionId,
+        shopVersion,
+        timestamp: new Date().toISOString(),
+        cart,
+        timeSpentSeconds,
+        cartTotal: Number(cartTotal.toFixed(2)),
+        cartItemCount,
+
+        // ✅ metrics
+        targetPurchased,
+        productDetailViewsCount,
+        paginationNextCount,
+        paginationPrevCount,
+        reachedPage2,
+        cartDistinctItems
+      });
 
       alert('✅ Order submitted successfully!');
       localStorage.removeItem('cart');
-      window.location.href = 'thankyou.html'; // optional
+      window.location.href = 'thankyou.html';
     } catch (error) {
       console.error('Error submitting order:', error);
       alert('⚠️ There was an issue saving your order. Please try again.');
     }
   });
+
   </script>
 </body>
 </html>

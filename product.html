@@ -35,6 +35,9 @@
           return;
         }
 
+        const views = Number(localStorage.getItem("productDetailViewsCount") || 0);
+        localStorage.setItem("productDetailViewsCount", String(views + 1));
+
         document.title = p.name;
 
         document.getElementById("product").innerHTML = `

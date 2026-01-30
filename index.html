@@ -32,8 +32,14 @@
     const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif.html', 'degknalnqgm.html'];
     const chosen = versions[Math.floor(Math.random() * versions.length)];
     const sessionId = 'session_' + Math.random().toString(36).substring(2, 10); //generate an ID, I guess
+    localStorage.setItem("sessionStartMs", String(Date.now()));
     localStorage.setItem('shopVersion', chosen); // store which version they got
     localStorage.setItem('sessionId', sessionId); // store which session ID they got
+    localStorage.setItem("productDetailViewsCount", "0");
+    localStorage.setItem("paginationNextCount", "0");
+    localStorage.setItem("paginationPrevCount", "0");
+    localStorage.setItem("reachedPage2", "false");
+    
     window.location.href = 'versions/' + chosen;
   });
   </script>
