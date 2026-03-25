@@ -9,26 +9,48 @@
     <script src="js/version.js"></script>
   </head>
   <body>
-    <main>
-      <h1>Welcome to the Webshop Experiment</h1>
-      <p>Instructions: You will be taken to a webshop. Please explore and complete a purchase if you wish.</p>
-      <button id="start-btn">Start Experiment</button>
-      <p>You are invited to participate in a short study about online shopping experiences. During this study, you will interact with a simulated online shop. Your actions (such as time spent, pages visited, and products added to cart) will be recorded anonymously for research purposes.</p>
+    <main class="intro-page">
+      <section class="intro-card">
+        <p class="eyebrow">Research study</p>
+        <h1>Welcome to the Webshop Experiment</h1>
 
-    <p>
-      <strong>Important:</strong> This is <em>not</em> a real shop — you will not be charged or asked for any payment details. The goal is to understand how different website designs influence shopping behavior.</p>
+        <p class="lead">
+          Imagine you want to buy a pair of hiking boots for a friend who enjoys hiking.
+        </p>
 
-    <p>Participation is voluntary and anonymous. You can leave the study at any time by closing the browser tab. By clicking “Start”, you consent to participate and allow your anonymous interaction data to be used for research.</p>
+        <div class="task-box">
+          <h2>Your task</h2>
+          <p>Find suitable hiking boots.</p>
+          <p><strong>Budget:</strong> €150.00 maximum</p>
+          <p>You should try not to exceed this budget.</p>
+        </div>
 
-    <p style="font-size: 0.9em;">
-      <a href="#" onclick="alert('This website is part of a research project conducted for academic purposes. We record anonymous interaction data (for example, pages visited, time spent, and buttons clicked). No personal data (such as name, email, or payment information) are collected, and participation involves no real purchases. The data are stored securely in an EU-compliant database (Firebase/Google Cloud) and are used only for research and educational analysis. You may withdraw at any time by closing the page, and you can request deletion of your data on the debrief page after completing the study.'); return false;">
-      Privacy Notice
-      </a>
-    </p>
-  </main>
+        <p>
+          When you are ready, click the button below to start the experiment.
+        </p>
 
+        <button id="start-btn" class="shop-btn">Start</button>
+
+        <div class="study-note">
+          <p>
+            <strong>Important:</strong> This is <em>not</em> a real shop. You will not be charged and you will not be asked for payment details.
+          </p>
+
+          <p>
+            Participation is voluntary and anonymous. You may leave the study at any time by closing the browser tab. By clicking “Start Experiment”, you consent to participate and allow your anonymous interaction data to be used for research purposes.
+          </p>
+        </div>
+
+        <p class="privacy-link">
+          <a href="#" onclick="alert('This website is part of a research project conducted for academic purposes. We record anonymous interaction data, such as pages visited, time spent, and buttons clicked. No personal data, such as name, email address, or payment information, are collected. The data are stored securely and used only for research and educational analysis. You may withdraw at any time by closing the page, and you may request deletion of your data on the debrief page after completing the study.'); return false;">
+            Privacy Notice
+          </a>
+        </p>
+      </section>
+    </main>
+  </body>
   <script>
-  document.getElementById('start-btn').addEventListener('click', () => {
+    document.getElementById('start-btn').addEventListener('click', () => {
     const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif.html', 'degknalnqgm.html'];
     const chosen = versions[Math.floor(Math.random() * versions.length)];
     const sessionId = 'session_' + Math.random().toString(36).substring(2, 10); //generate an ID, I guess
@@ -43,5 +65,9 @@
     window.location.href = 'versions/' + chosen;
   });
   </script>
-</body>
+
+  <script>
+    window.updateHeaderCart?.();
+  </script>
+
 </html>

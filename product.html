@@ -4,15 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Product</title>
-
   <link rel="stylesheet" href="style.css" />
   <script src="js/cart.js" defer></script>
+  <script src="js/header.js" defer></script>
 </head>
 <body>
   <main class="container">
-    <a href="cart.html">🛒 View cart</a> |
-    <a href="versions/crsvmfzjiif.html">← Back to shop</a>
-
+    <div class="product-top-links">
+      <a class="top-link" href="cart.html">🛒 View cart</a>
+      <a class="top-link" id="backToShopLink" href="#">← Back to shop</a>
+    </div>
     <div id="product" style="margin-top: 20px;"></div>
   </main>
 
@@ -43,35 +44,59 @@
         document.getElementById("product").innerHTML = `
           <div class="product-detail">
             <img class="product-detail-img" src="${p.image}" alt="${p.name}">
+            
             <div class="product-detail-info">
               <h1>${p.name}</h1>
               <p class="price">€${Number(p.price).toFixed(2)}</p>
+              <p class="product-rating">★ ${p.rating ?? "—"} <span>(${p.reviews ?? 0} reviews)</span></p>
               <p>${p.shortDesc || ""}</p>
-              <p><small>Rating: ${p.rating ?? "—"} (${p.reviews ?? 0} reviews)</small></p>
 
-              <button id="addBtn" type="button"
+              <button id="addBtn" class="shop-btn" type="button"
                 data-id="${p.id}"
                 data-name="${encodeURIComponent(p.name)}"
                 data-price="${Number(p.price)}"
-              >Add to cart</button>
+                data-image="${p.image}"
+              >
+                Add to cart
+              </button>
             </div>
           </div>
         `;
 
         // Attach AFTER the button exists
         document.getElementById("addBtn").addEventListener("click", (e) => {
-          const btn = e.currentTarget;
-          window.addToCart(
-            Number(btn.dataset.id),
-            decodeURIComponent(btn.dataset.name),
-            Number(btn.dataset.price)
-          );
-        });
+        const btn = e.currentTarget;
+
+        const id = Number(btn.dataset.id);
+        const name = decodeURIComponent(btn.dataset.name);
+        const price = Number(btn.dataset.price);
+        const image = btn.dataset.image; // <- new
+
+        window.addToCart(id, name, price, image);
+      });
       })
       .catch(err => {
         console.error(err);
         document.getElementById("product").innerHTML = "<p>Could not load product.</p>";
       });
+
+    window.updateHeaderCart?.();
+
+    window.addEventListener("pageshow", () => {
+    window.updateHeaderCart?.();
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+    window.insertHeader?.();
+    window.updateHeaderCart?.();
+    });
+
+    const backLink = document.getElementById("backToShopLink");
+    const version = localStorage.getItem("shopVersion");
+
+    if (backLink && version) {
+      backLink.href = `versions/${version}`;
+    }
   </script>
-</body>
+  </body>
 </html>

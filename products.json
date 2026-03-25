@@ -2,7 +2,7 @@
   {
     "id": 2,
     "name": "SummitLite Hiking Boots",
-    "price": 169.00,
+    "price": 159.99,
     "image": "media/products/boots/summitlite.jpg",
     "category": "boots",
     "tags": ["hiking", "footwear"],
@@ -23,8 +23,8 @@
   },
   {
     "id": 4,
-    "name": "Merino Hiking Socks (2-pack)",
-    "price": 18.00,
+    "name": "Merino Hiking Socks (3-pack)",
+    "price": 26.99,
     "image": "media/products/accessories/socks-merino.jpg",
     "category": "accessories",
     "tags": ["comfort", "warmth"],
@@ -35,7 +35,7 @@
   {
     "id": 5,
     "name": "Stainless Water Bottle (750ml)",
-    "price": 22.00,
+    "price": 19.99,
     "image": "media/products/accessories/bottle-stainless.jpg",
     "category": "accessories",
     "tags": ["hydration"],
@@ -46,7 +46,7 @@
   {
     "id": 6,
     "name": "Compact Headlamp",
-    "price": 26.00,
+    "price": 24.99,
     "image": "media/products/accessories/headlamp-compact.jpg",
     "category": "gear",
     "tags": ["safety", "camping"],
@@ -57,7 +57,7 @@
   {
     "id": 7,
     "name": "Mini First Aid Kit",
-    "price": 7.00,
+    "price": 8.99,
     "image": "media/products/accessories/firstaid-mini.jpg",
     "category": "gear",
     "tags": ["safety"],
@@ -67,8 +67,8 @@
   },
   {
     "id": 8,
-    "name": "Trail Snack Bar Pack (5)",
-    "price": 5.00,
+    "name": "Trail Snack Bar Pack",
+    "price": 4.99,
     "image": "media/products/accessories/snacks-pack.jpg",
     "category": "accessories",
     "tags": ["food"],
@@ -91,7 +91,7 @@
   {
     "id": 10,
     "name": "AlpineShell Waterproof Jacket",
-    "price": 89.00,
+    "price": 89.99,
     "image": "media/products/clothing/jacket-alpineshell.jpg",
     "category": "clothing",
     "tags": ["waterproof", "rain"],
@@ -102,7 +102,7 @@
   {
     "id": 12,
     "name": "ThermoPeak Fleece Jacket",
-    "price": 59.00,
+    "price": 59.99,
     "image": "media/products/clothing/jacket-thermopeak.jpg",
     "category": "clothing",
     "tags": ["warmth", "fleece"],
@@ -113,7 +113,7 @@
   {
     "id": 1,
     "name": "TrailStride Hiking Boots",
-    "price": 149.00,
+    "price": 149.99,
     "image": "media/products/boots/trailstride.jpg",
     "category": "boots",
     "tags": ["hiking", "footwear"],
@@ -124,7 +124,7 @@
   {
     "id": 13,
     "name": "MountainCore Down Coat",
-    "price": 179.00,
+    "price": 179.99,
     "image": "media/products/clothing/coat-mountaincore.jpg",
     "category": "clothing",
     "tags": ["winter", "insulated"],
@@ -135,7 +135,7 @@
   {
     "id": 11,
     "name": "StormGuard Rain Jacket",
-    "price": 119.00,
+    "price": 119.99,
     "image": "media/products/clothing/jacket-stormguard.jpg",
     "category": "clothing",
     "tags": ["waterproof", "wind"],
@@ -146,7 +146,7 @@
   {
     "id": 14,
     "name": "TrailBlaze Softshell Jacket",
-    "price": 74.00,
+    "price": 74.50,
     "image": "media/products/clothing/jacket-trailblaze.jpg",
     "category": "clothing",
     "tags": ["wind", "lightweight"],
@@ -157,7 +157,7 @@
   {
     "id": 15,
     "name": "Explorer 30L Backpack",
-    "price": 49.00,
+    "price": 49.99,
     "image": "media/products/accessories/backpack-explorer30.jpg",
     "category": "backpacks",
     "tags": ["storage", "daypack"],
@@ -168,7 +168,7 @@
   {
     "id": 16,
     "name": "SummitPro 50L Backpack",
-    "price": 79.00,
+    "price": 79.99,
     "image": "media/products/accessories/backpack-summitpro50.jpg",
     "category": "backpacks",
     "tags": ["storage", "multi-day"],
@@ -179,7 +179,7 @@
   {
     "id": 17,
     "name": "UltraLight 20L Backpack",
-    "price": 39.00,
+    "price": 39.99,
     "image": "media/products/accessories/backpack-ultralight20.jpg",
     "category": "backpacks",
     "tags": ["lightweight", "daypack"],
@@ -190,7 +190,7 @@
   {
     "id": 18,
     "name": "Thermal Hiking Gloves",
-    "price": 14.00,
+    "price": 14.99,
     "image": "media/products/accessories/gloves-thermal.jpg",
     "category": "accessories",
     "tags": ["warmth", "winter"],
@@ -201,7 +201,7 @@
   {
     "id": 19,
     "name": "Wool Beanie Hat",
-    "price": 12.00,
+    "price": 12.99,
     "image": "media/products/accessories/beanie-wool.jpg",
     "category": "accessories",
     "tags": ["warmth", "winter"],
@@ -212,7 +212,7 @@
   {
     "id": 20,
     "name": "Hiking Trekking Pole",
-    "price": 29.00,
+    "price": 29.99,
     "image": "media/products/accessories/pole-trekking.jpg",
     "category": "gear",
     "tags": ["support", "balance"],
@@ -223,7 +223,7 @@
   {
     "id": 21,
     "name": "Waterproof Phone Case",
-    "price": 9.00,
+    "price": 9.99,
     "image": "media/products/accessories/phonecase-waterproof.jpg",
     "category": "accessories",
     "tags": ["electronics", "waterproof"],
@@ -234,7 +234,7 @@
   {
     "id": 22,
     "name": "Portable Power Bank",
-    "price": 19.00,
+    "price": 19.99,
     "image": "media/products/accessories/powerbank-portable.jpg",
     "category": "electronics",
     "tags": ["charging", "travel"],
@@ -245,7 +245,7 @@
   {
     "id": 23,
     "name": "Compact Camping Towel",
-    "price": 11.00,
+    "price": 11.99,
     "image": "media/products/accessories/towel-compact.jpg",
     "category": "accessories",
     "tags": ["travel", "lightweight"],
@@ -256,7 +256,7 @@
   {
     "id": 24,
     "name": "Thermal Base Layer Set",
-    "price": 34.00,
+    "price": 34.99,
     "image": "media/products/clothing/baselayer-thermal.jpg",
     "category": "clothing",
     "tags": ["warmth", "winter"],
@@ -267,7 +267,7 @@
   {
     "id": 25,
     "name": "Trail Map & Compass Set",
-    "price": 8.00,
+    "price": 8.99,
     "image": "media/products/accessories/map-compass.jpg",
     "category": "gear",
     "tags": ["navigation", "safety"],
@@ -278,7 +278,7 @@
   {
     "id": 26,
     "name": "Insulated Travel Mug",
-    "price": 16.00,
+    "price": 16.99,
     "image": "media/products/accessories/mug-insulated.jpg",
     "category": "accessories",
     "tags": ["hydration", "hot drinks"],
@@ -289,7 +289,7 @@
   {
     "id": 27,
     "name": "Lightweight Sleeping Bag",
-    "price": 69.00,
+    "price": 69.99,
     "image": "media/products/accessories/sleepingbag-light.jpg",
     "category": "gear",
     "tags": ["camping", "sleep"],

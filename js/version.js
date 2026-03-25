@@ -11,5 +11,6 @@ function getShopVersion() {
   return localStorage.getItem('shopVersion') || 'unknown';
 }
 
-// Export (only needed if using ES Modules)
-export { assignShopVersion, getShopVersion };
+// ✅ No exports needed when loaded via <script src=...>
+window.assignShopVersion = assignShopVersion;
+window.getShopVersion = getShopVersion;
