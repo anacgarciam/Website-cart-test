@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
+    <title>Shopping Cart</title>
     <link rel="stylesheet" href="style.css">
     <script src="js/header.js" defer></script>
   </head>
@@ -47,12 +47,10 @@
     window.updateCheckoutState();
    });
    
-    const v = localStorage.getItem("shopVersion") || "crsvmfzjiif.html";
-    document.getElementById("continueLink").href = "versions/" + v;
+const v = localStorage.getItem("shopVersion");
 
-
-
-    const sessionId = localStorage.getItem("sessionId") || "missing_session";
+    document.getElementById("continueLink").href =
+    v ? "versions/" + v : "index.html";
 
 
 
@@ -67,8 +65,8 @@
 
       const sessionId = localStorage.getItem("sessionId") || "missing_session";
       const shopVersion = localStorage.getItem("shopVersion") || "unknown";
-
       const startMs = Number(localStorage.getItem("sessionStartMs") || Date.now());
+      
       const timeSpentSeconds = Math.round((Date.now() - startMs) / 1000);
 
       const cartTotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);

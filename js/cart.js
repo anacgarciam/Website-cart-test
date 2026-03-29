@@ -71,12 +71,14 @@ window.renderCart = function () {
   if (!cartItemsEl || !cartTotalEl) return; // not on cart page
 
   if (cart.length === 0) {
-    const version = localStorage.getItem("shopVersion") || "crsvmfzjiif.html";
+    const version = localStorage.getItem("shopVersion");
 
     cartItemsEl.innerHTML = `
       <div class="empty-cart">
         <p>Your cart is empty.</p>
-        <a class="top-link" href="versions/${version}">← Continue shopping</a>
+        <a class="top-link" href="${version ? `versions/${version}` : '../index.html'}">
+          ← Continue shopping
+        </a>
       </div>
     `;
 
