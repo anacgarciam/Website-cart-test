@@ -15,7 +15,7 @@
         <h1>Welcome!</h1>
 
         <p class="lead">
-          You are invited to take part in a short study about online shopping experiences.
+          You are invited to take part in a short study about online shopping experiences. Please, read the task carefully before starting.
         </p>
 
         <div class="task-box">
@@ -52,25 +52,46 @@
       </section>
     </main>
   <script>
-    document.getElementById('start-btn').addEventListener('click', () => {
-    const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif.html', 'degknalnqgm.html'];
-    const chosen = versions[Math.floor(Math.random() * versions.length)];
-    /*const chosen = "crsvmfzjiif.html";*/
-    const sessionId = 'session_' + Math.random().toString(36).substring(2, 10); //generate an ID, I guess
-    localStorage.setItem("sessionStartMs", String(Date.now()));
-    localStorage.setItem('shopVersion', chosen); // store which version they got
-    localStorage.setItem('sessionId', sessionId); // store which session ID they got
-    localStorage.setItem("productDetailViewsCount", "0");
-    localStorage.setItem("paginationNextCount", "0");
-    localStorage.setItem("paginationPrevCount", "0");
-    localStorage.setItem("reachedPage2", "false");
-    
-    window.location.href = 'versions/' + chosen;
-  });
-  </script>
+    const completed = localStorage.getItem("studyCompleted") === "true";
+    const startBtn = document.getElementById("start-btn");
 
-  <script>
+    if (completed && startBtn) {
+      startBtn.disabled = true;
+      startBtn.textContent = "Study already completed";
+
+      const msg = document.createElement("p");
+      msg.className = "repeat-note";
+      msg.textContent = "This browser has already completed the study. Thank you for your participation.";
+      startBtn.insertAdjacentElement("afterend", msg);
+    }
+
+    document.getElementById('start-btn').addEventListener('click', () => {
+        const completed = localStorage.getItem("studyCompleted") === "true";
+        if (completed) return;
+
+        const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif.html', 'degknalnqgm.html'];
+
+        // while testing control only:
+        const chosen = "crsvmfzjiif.html";
+        // later switch back to:
+        // const chosen = versions[Math.floor(Math.random() * versions.length)];
+
+        const sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
+
+        localStorage.setItem("sessionStartMs", String(Date.now()));
+        localStorage.setItem("productDetailViewsCount", "0");
+        localStorage.setItem("paginationNextCount", "0");
+        localStorage.setItem("paginationPrevCount", "0");
+        localStorage.setItem("reachedPage2", "false");
+
+        localStorage.setItem('shopVersion', chosen);
+        localStorage.setItem('sessionId', sessionId);
+
+        window.location.href = 'versions/' + chosen;
+      });
+
     window.updateHeaderCart?.();
+
   </script>
   </body>
 </html>

@@ -55,7 +55,7 @@ h4 {
     height: 45vh;
     min-height: 280px;
     background-size: cover;
-    background-position: top 25% right 0;
+    background-position: center 0%;
     padding: 0 80px;
     display: flex;
     flex-direction: column;
@@ -80,18 +80,19 @@ h4 {
 /* 3-column grid */
 #product-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
+  max-width: 900px;   /* 👈 controls max columns */
+  margin: 0 auto;     /* 👈 center grid */
 }
 
 /*Products look like a card */
 .product {
   border: 1px solid #dfe7f0;
   border-radius: 14px;
-  padding: 18px;
+  padding: 16px;
   background: #fff;
   text-align: center;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -119,10 +120,11 @@ h4 {
 
 .product img {
   width: 100%;
-  height: 180px;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 10px;
+  display: block;
 }
 
 .shop-btn {
@@ -694,4 +696,16 @@ h4 {
   margin-top: 24px;
   font-size: 14px;
   color: #555;
+}
+
+
+.repeat-note {
+  margin-top: 14px;
+  color: #7a1f1f;
+  font-weight: 600;
+}
+
+#start-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

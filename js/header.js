@@ -15,7 +15,7 @@ function buildHeader() {
       </a>
 
       <nav class="nav">
-        <a href="${base}about.html" class="nav-link">About us</a>
+
 
         <a href="${base}cart.html" class="nav-link cart-link" aria-label="Cart">
           <span class="cart-icon" aria-hidden="true">🛒</span>
