@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Research study</title>
     <link rel="stylesheet" href="style.css">
-    <script src="js/version.js"></script>
   </head>
   <body>
     <main class="intro-page">
@@ -51,47 +50,54 @@
         </p>
       </section>
     </main>
-  <script>
+<script type="module">
+  import { db } from './js/firebase.js';
+  import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+  const completed = localStorage.getItem("studyCompleted") === "true";
+  const startBtn = document.getElementById("start-btn");
+
+  if (completed && startBtn) {
+    startBtn.disabled = true;
+    startBtn.textContent = "Study already completed";
+
+    const msg = document.createElement("p");
+    msg.className = "repeat-note";
+    msg.textContent = "This browser has already completed the study. Thank you for your participation.";
+    startBtn.insertAdjacentElement("afterend", msg);
+  }
+
+  startBtn.addEventListener('click', async () => {
     const completed = localStorage.getItem("studyCompleted") === "true";
-    const startBtn = document.getElementById("start-btn");
+    if (completed) return;
 
-    if (completed && startBtn) {
-      startBtn.disabled = true;
-      startBtn.textContent = "Study already completed";
+    const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif.html', 'degknalnqgm.html'];
 
-      const msg = document.createElement("p");
-      msg.className = "repeat-note";
-      msg.textContent = "This browser has already completed the study. Thank you for your participation.";
-      startBtn.insertAdjacentElement("afterend", msg);
+    const chosen = versions[Math.floor(Math.random() * versions.length)];
+
+    const sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
+
+    localStorage.setItem("sessionStartMs", String(Date.now()));
+    localStorage.setItem("productDetailViewsCount", "0");
+    localStorage.setItem("paginationNextCount", "0");
+    localStorage.setItem("paginationPrevCount", "0");
+    localStorage.setItem("reachedPage2", "false");
+
+    localStorage.setItem('shopVersion', chosen);
+    localStorage.setItem('sessionId', sessionId);
+
+    try {
+      await addDoc(collection(db, "sessions"), {
+        sessionId,
+        shopVersion: chosen,
+        startedAt: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error("Error logging session start:", error);
     }
 
-    document.getElementById('start-btn').addEventListener('click', () => {
-        const completed = localStorage.getItem("studyCompleted") === "true";
-        if (completed) return;
-
-        const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif.html', 'degknalnqgm.html'];
-
-        // while testing control only:
-        const chosen = "crsvmfzjiif.html";
-        // later switch back to:
-        // const chosen = versions[Math.floor(Math.random() * versions.length)];
-
-        const sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
-
-        localStorage.setItem("sessionStartMs", String(Date.now()));
-        localStorage.setItem("productDetailViewsCount", "0");
-        localStorage.setItem("paginationNextCount", "0");
-        localStorage.setItem("paginationPrevCount", "0");
-        localStorage.setItem("reachedPage2", "false");
-
-        localStorage.setItem('shopVersion', chosen);
-        localStorage.setItem('sessionId', sessionId);
-
-        window.location.href = 'versions/' + chosen;
-      });
-
-    window.updateHeaderCart?.();
-
-  </script>
+    window.location.href = 'versions/' + chosen;
+  });
+</script>
   </body>
 </html>
