@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="cart-container">
+      <h1 class="cart-title">Your Cart</h1>
+
+      <p class="cart-links">
+        <a id="continueLink" class="top-link" href="#">← Continue shopping</a>
+      </p>
+
+      <div id="cart-items"></div>
+
+      <div class="cart-summary">
+        <p id="cart-total"></p>
+        <button id="checkout-btn" class="shop-btn">Proceed to Checkout</button>
+      </div>
+    </main>
+    
+  <script src="js/cart.js" defer></script>
+
+  <!-- Firebase and Firestore imports -->
+  <script type="module">
+    console.log("cart.html module loaded");
+    import { db } from './js/firebase.js';
+    import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+
+    window.updateCheckoutState = function () {
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      document.getElementById("checkout-btn").disabled = (cart.length === 0);
+    };
+   
+    window.addEventListener("DOMContentLoaded", () => {
+      const v = localStorage.getItem("shopVersion");
+      document.getElementById("continueLink").href =
+        v ? "versions/" + v : "index.html";
+    });
+
+
+
+    document.getElementById('checkout-btn').addEventListener('click', async () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+      if (cart.length === 0) {
+        alert("Your cart is empty.");
+        window.updateCheckoutState?.();
+        return;
+      }
+
+      const sessionId = localStorage.getItem("sessionId") || "missing_session";
+      const shopVersion = localStorage.getItem("shopVersion") || "unknown";
+      const startMs = Number(localStorage.getItem("sessionStartMs") || Date.now());
+      
+      const timeSpentSeconds = Math.round((Date.now() - startMs) / 1000);
+
+      const cartTotal = cart.reduce((sum, i) => {
+        const base = i.price * i.quantity;
+        const waterproofing = i.waterproofingSelected ? (i.waterproofingPrice || 0) * i.quantity : 0;
+        return sum + base + waterproofing;
+      }, 0);
+      const cartItemCount = cart.reduce((sum, i) => sum + i.quantity, 0);
+      const cartDistinctItems = cart.length;
+
+    // ✅ Task success (TrailStride Hiking Boots is id 1)
+      const TARGET_ID = 1;
+      const targetPurchased = cart.some(item => Number(item.id) === TARGET_ID);
+
+      const BUDGET_LIMIT = 150;
+      const withinBudget = cartTotal <= BUDGET_LIMIT;
+      const taskSuccess = targetPurchased && withinBudget;
+      const strictTaskSuccess = targetPurchased && withinBudget && cartDistinctItems === 1;
+
+      // ✅ Pagination + product views (from localStorage)
+      const productDetailViewsCount = Number(localStorage.getItem("productDetailViewsCount") || 0);
+      const paginationNextCount = Number(localStorage.getItem("paginationNextCount") || 0);
+      const paginationPrevCount = Number(localStorage.getItem("paginationPrevCount") || 0);
+      const reachedPage2 = (localStorage.getItem("reachedPage2") === "true");
+
+      const popup1Shown = localStorage.getItem("popup1Shown") === "true";
+      const popup1Accepted = localStorage.getItem("popup1Accepted") === "true";
+      const popup2Shown = localStorage.getItem("popup2Shown") === "true";
+      const popup2Accepted = localStorage.getItem("popup2Accepted") === "true";
+      const popup3Shown = localStorage.getItem("popup3Shown") === "true";
+      const popup3Accepted = localStorage.getItem("popup3Accepted") === "true";
+      const waterproofingCount = cart.filter(i => i.waterproofingSelected).length;
+
+    try {
+      await addDoc(collection(db, "orders"), {
+        sessionId,
+        shopVersion,
+        timestamp: new Date().toISOString(),
+        cart,
+        timeSpentSeconds,
+        cartTotal: Number(cartTotal.toFixed(2)),
+        cartItemCount,
+
+        // ✅ metrics
+        targetPurchased,
+        withinBudget,
+        taskSuccess,
+        strictTaskSuccess,
+        productDetailViewsCount,
+        paginationNextCount,
+        paginationPrevCount,
+        reachedPage2,
+        cartDistinctItems,
+        popup1Shown,
+        popup1Accepted,
+        popup2Shown,
+        popup2Accepted,
+        popup3Shown,
+        popup3Accepted,
+        waterproofingCount,
+      });
+
+      alert('✅ Order submitted successfully!');
+      localStorage.removeItem('cart');
+      window.updateCheckoutState();
+      window.updateHeaderCart?.();
+      window.location.href = 'thankyou.html';
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      alert('⚠️ There was an issue saving your order. Please try again.');
+    }
+  });
+
+  window.addEventListener("pageshow", () => {
+  window.updateHeaderCart?.();
+  });
+
+  window.addEventListener("DOMContentLoaded", () => {
+  window.insertHeader?.();
+  window.renderCart();
+  window.updateHeaderCart?.();
+  window.updateCheckoutState();
+  });
+
+  </script>
+  </body>
+
+</html>

@@ -1,0 +1,301 @@
+[
+  {
+    "id": 2,
+    "name": "SummitLite Hiking Boots",
+    "price": 159.99,
+    "image": "media/products/boots/summitlite.jpg",
+    "category": "boots",
+    "tags": ["hiking", "footwear"],
+    "rating": 4.3,
+    "reviews": 189,
+    "shortDesc": "Lighter build, premium cushioning."
+  },
+  {
+    "id": 3,
+    "name": "CanyonGrip Hiking Boots",
+    "price": 199.99,
+    "image": "media/products/boots/canyongrip.jpg",
+    "category": "boots",
+    "tags": ["hiking", "footwear"],
+    "rating": 4.3,
+    "reviews": 189,
+    "shortDesc": "Durable with solid traction."
+  },
+  {
+    "id": 4,
+    "name": "Merino Hiking Socks (3-pack)",
+    "price": 26.99,
+    "image": "media/products/accessories/socks-merino.jpg",
+    "category": "accessories",
+    "tags": ["comfort", "warmth"],
+    "rating": 4.5,
+    "reviews": 980,
+    "shortDesc": "Blister-reducing, breathable merino blend."
+  },
+  {
+    "id": 5,
+    "name": "Stainless Water Bottle (750ml)",
+    "price": 19.99,
+    "image": "media/products/accessories/bottle-stainless.jpg",
+    "category": "accessories",
+    "tags": ["hydration"],
+    "rating": 4.4,
+    "reviews": 410,
+    "shortDesc": "Leak-proof lid, keeps drinks cool longer."
+  },
+  {
+    "id": 6,
+    "name": "Compact Headlamp",
+    "price": 24.99,
+    "image": "media/products/accessories/headlamp-compact.jpg",
+    "category": "gear",
+    "tags": ["safety", "camping"],
+    "rating": 4.2,
+    "reviews": 265,
+    "shortDesc": "Bright beam, lightweight, 3 modes."
+  },
+  {
+    "id": 7,
+    "name": "Mini First Aid Kit",
+    "price": 8.99,
+    "image": "media/products/accessories/firstaid-mini.jpg",
+    "category": "gear",
+    "tags": ["safety"],
+    "rating": 4.1,
+    "reviews": 150,
+    "shortDesc": "Basics for minor cuts and blisters."
+  },
+  {
+    "id": 8,
+    "name": "Trail Snack Bar Pack",
+    "price": 4.99,
+    "image": "media/products/accessories/snacks-pack.jpg",
+    "category": "accessories",
+    "tags": ["food"],
+    "rating": 4.0,
+    "reviews": 92,
+    "shortDesc": "Quick energy for hikes and travel."
+  },
+  {
+    "id": 28,
+    "name": "Boot Care & Waterproofing Spray",
+    "price": 12.99,
+    "image": "media/products/accessories/boot-spray.jpg",
+    "category": "accessories",
+    "tags": ["waterproof", "rain"],
+    "rating": 4.0,
+    "reviews": 92,
+    "shortDesc": "Take care of your boots and stay safe in the rain."
+  },
+
+  {
+    "id": 10,
+    "name": "AlpineShell Waterproof Jacket",
+    "price": 89.99,
+    "image": "media/products/clothing/jacket-alpineshell.jpg",
+    "category": "clothing",
+    "tags": ["waterproof", "rain"],
+    "rating": 4.5,
+    "reviews": 430,
+    "shortDesc": "Lightweight waterproof jacket with breathable fabric."
+  },
+  {
+    "id": 12,
+    "name": "ThermoPeak Fleece Jacket",
+    "price": 59.99,
+    "image": "media/products/clothing/jacket-thermopeak.jpg",
+    "category": "clothing",
+    "tags": ["warmth", "fleece"],
+    "rating": 4.3,
+    "reviews": 280,
+    "shortDesc": "Warm fleece layer for cold conditions."
+  },
+  {
+    "id": 1,
+    "name": "TrailStride Hiking Boots",
+    "price": 149.99,
+    "image": "media/products/boots/trailstride.jpg",
+    "category": "boots",
+    "tags": ["hiking", "footwear"],
+    "rating": 4.6,
+    "reviews": 312,
+    "shortDesc": "Water-resistant, grippy sole, all-day comfort."
+  },
+  {
+    "id": 13,
+    "name": "MountainCore Down Coat",
+    "price": 179.99,
+    "image": "media/products/clothing/coat-mountaincore.jpg",
+    "category": "clothing",
+    "tags": ["winter", "insulated"],
+    "rating": 4.8,
+    "reviews": 510,
+    "shortDesc": "Heavy-duty insulated coat for winter hiking."
+  },
+  {
+    "id": 11,
+    "name": "StormGuard Rain Jacket",
+    "price": 119.99,
+    "image": "media/products/clothing/jacket-stormguard.jpg",
+    "category": "clothing",
+    "tags": ["waterproof", "wind"],
+    "rating": 4.7,
+    "reviews": 620,
+    "shortDesc": "Premium rain protection for harsh weather."
+  },
+  {
+    "id": 14,
+    "name": "TrailBlaze Softshell Jacket",
+    "price": 74.50,
+    "image": "media/products/clothing/jacket-trailblaze.jpg",
+    "category": "clothing",
+    "tags": ["wind", "lightweight"],
+    "rating": 4.2,
+    "reviews": 190,
+    "shortDesc": "Flexible softshell jacket for active hikes."
+  },
+  {
+    "id": 15,
+    "name": "Explorer 30L Backpack",
+    "price": 49.99,
+    "image": "media/products/accessories/backpack-explorer30.jpg",
+    "category": "backpacks",
+    "tags": ["storage", "daypack"],
+    "rating": 4.4,
+    "reviews": 350,
+    "shortDesc": "Compact backpack for day trips."
+  },
+  {
+    "id": 16,
+    "name": "SummitPro 50L Backpack",
+    "price": 79.99,
+    "image": "media/products/accessories/backpack-summitpro50.jpg",
+    "category": "backpacks",
+    "tags": ["storage", "multi-day"],
+    "rating": 4.6,
+    "reviews": 410,
+    "shortDesc": "Spacious backpack for longer adventures."
+  },
+  {
+    "id": 17,
+    "name": "UltraLight 20L Backpack",
+    "price": 39.99,
+    "image": "media/products/accessories/backpack-ultralight20.jpg",
+    "category": "backpacks",
+    "tags": ["lightweight", "daypack"],
+    "rating": 4.1,
+    "reviews": 210,
+    "shortDesc": "Minimalist pack for short hikes."
+  },
+  {
+    "id": 18,
+    "name": "Thermal Hiking Gloves",
+    "price": 14.99,
+    "image": "media/products/accessories/gloves-thermal.jpg",
+    "category": "accessories",
+    "tags": ["warmth", "winter"],
+    "rating": 4.0,
+    "reviews": 95,
+    "shortDesc": "Insulated gloves for cold weather."
+  },
+  {
+    "id": 19,
+    "name": "Wool Beanie Hat",
+    "price": 12.99,
+    "image": "media/products/accessories/beanie-wool.jpg",
+    "category": "accessories",
+    "tags": ["warmth", "winter"],
+    "rating": 4.2,
+    "reviews": 160,
+    "shortDesc": "Classic wool beanie for chilly hikes."
+  },
+  {
+    "id": 20,
+    "name": "Hiking Trekking Pole",
+    "price": 29.99,
+    "image": "media/products/accessories/pole-trekking.jpg",
+    "category": "gear",
+    "tags": ["support", "balance"],
+    "rating": 4.3,
+    "reviews": 240,
+    "shortDesc": "Adjustable pole for stability."
+  },
+  {
+    "id": 21,
+    "name": "Waterproof Phone Case",
+    "price": 9.99,
+    "image": "media/products/accessories/phonecase-waterproof.jpg",
+    "category": "accessories",
+    "tags": ["electronics", "waterproof"],
+    "rating": 4.1,
+    "reviews": 130,
+    "shortDesc": "Protect your phone from rain and splashes."
+  },
+  {
+    "id": 22,
+    "name": "Portable Power Bank",
+    "price": 19.99,
+    "image": "media/products/accessories/powerbank-portable.jpg",
+    "category": "electronics",
+    "tags": ["charging", "travel"],
+    "rating": 4.5,
+    "reviews": 500,
+    "shortDesc": "Charge devices on the go."
+  },
+  {
+    "id": 23,
+    "name": "Compact Camping Towel",
+    "price": 11.99,
+    "image": "media/products/accessories/towel-compact.jpg",
+    "category": "accessories",
+    "tags": ["travel", "lightweight"],
+    "rating": 4.0,
+    "reviews": 88,
+    "shortDesc": "Quick-drying microfibre towel."
+  },
+  {
+    "id": 24,
+    "name": "Thermal Base Layer Set",
+    "price": 34.99,
+    "image": "media/products/clothing/baselayer-thermal.jpg",
+    "category": "clothing",
+    "tags": ["warmth", "winter"],
+    "rating": 4.4,
+    "reviews": 270,
+    "shortDesc": "Insulating base layer for cold climates."
+  },
+  {
+    "id": 25,
+    "name": "Trail Map & Compass Set",
+    "price": 8.99,
+    "image": "media/products/accessories/map-compass.jpg",
+    "category": "gear",
+    "tags": ["navigation", "safety"],
+    "rating": 4.1,
+    "reviews": 60,
+    "shortDesc": "Essential navigation tools."
+  },
+  {
+    "id": 26,
+    "name": "Insulated Travel Mug",
+    "price": 16.99,
+    "image": "media/products/accessories/mug-insulated.jpg",
+    "category": "accessories",
+    "tags": ["hydration", "hot drinks"],
+    "rating": 4.3,
+    "reviews": 145,
+    "shortDesc": "Keeps drinks hot during hikes."
+  },
+  {
+    "id": 27,
+    "name": "Lightweight Sleeping Bag",
+    "price": 69.99,
+    "image": "media/products/accessories/sleepingbag-light.jpg",
+    "category": "gear",
+    "tags": ["camping", "sleep"],
+    "rating": 4.5,
+    "reviews": 310,
+    "shortDesc": "Compact sleeping bag for mild conditions."
+  }
+
+]

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Thank you</title>
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Header + cart logic -->
+  <script src="js/header.js" defer></script>
+  <script src="js/cart.js" defer></script>
+</head>
+<body>
+  <main class="thankyou-page">
+  <section class="thankyou-card">
+    <h1>Thank you for your participation!</h1>
+
+    <p>
+      Your session has been recorded successfully. You may now close this page.
+    </p>
+
+    <p>
+      This study investigates how different website designs influence online shopping behavior.
+      Some elements of the shop may have been designed to affect your decisions.
+    </p>
+
+    <p>
+      All data collected are anonymous and used only for research purposes.
+    </p>
+
+    <div class="thankyou-actions">
+      <button id="deleteBtn" class="secondary-btn">Delete my data</button>
+
+      <div id="deleteConfirmBox" class="delete-confirm-box" style="display: none;">
+        <p>
+          Are you sure you want to delete your data? This action cannot be undone.
+        </p>
+        <div class="delete-confirm-actions">
+          <button id="confirmDeleteBtn" class="secondary-btn" type="button">
+            Yes, delete my data
+          </button>
+          <button id="cancelDeleteBtn" class="shop-btn" type="button">
+            Keep my data
+          </button>
+        </div>
+      </div>
+
+      <p id="deleteStatus"></p>
+    </div>
+
+    <p class="contact-note">
+      If you have any questions, feel free to contact:
+      <br>
+      <strong>ana.garcia-moreno@etu.unistra.fr</strong>
+    </p>
+  </section>
+</main>
+
+  <script type="module">
+    import { db } from "./js/firebase.js";
+    import {
+      collection,
+      query,
+      where,
+      getDocs,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+    const deleteBtn = document.getElementById("deleteBtn");
+    const confirmBox = document.getElementById("deleteConfirmBox");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+    const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+    const statusText = document.getElementById("deleteStatus");
+
+    // First click: only show the custom confirmation box
+    deleteBtn.addEventListener("click", () => {
+      confirmBox.style.display = "block";
+      deleteBtn.style.display = "none";
+    });
+
+    // If user changes their mind
+    cancelDeleteBtn.addEventListener("click", () => {
+      confirmBox.style.display = "none";
+      deleteBtn.style.display = "inline-block";
+    });
+
+    // Only this button actually deletes the data
+    confirmDeleteBtn.addEventListener("click", async () => {
+      const sessionId = localStorage.getItem("sessionId");
+
+      if (!sessionId) {
+        statusText.textContent = "No session data found.";
+        return;
+      }
+
+      try {
+        const collections = ["sessions", "orders"];
+
+        for (const col of collections) {
+          const q = query(collection(db, col), where("sessionId", "==", sessionId));
+          const snapshot = await getDocs(q);
+
+          const deletions = [];
+          snapshot.forEach(doc => deletions.push(deleteDoc(doc.ref)));
+          await Promise.all(deletions);
+        }
+
+        statusText.textContent = "✅ Your data has been deleted.";
+        localStorage.clear();
+        confirmBox.style.display = "none";
+      } catch (error) {
+        console.error("Error deleting data:", error);
+        statusText.textContent = "⚠️ Could not delete data. Please try again.";
+      }
+    });
+
+localStorage.setItem("studyCompleted", "true");
+</script>
+</body>
+</html>

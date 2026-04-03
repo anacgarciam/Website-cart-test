@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="js/cart.js" defer></script>
+  <script src="js/header.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <div class="product-top-links">
+      <a class="top-link" href="cart.html">🛒 View cart</a>
+      <a class="top-link" id="backToShopLink" href="#">← Back to shop</a>
+    </div>
+    <div id="product" style="margin-top: 20px;"></div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = Number(params.get("id"));
+    const fromVersion = params.get("from");
+
+    if (fromVersion) {
+      localStorage.setItem("shopVersion", fromVersion);
+    }
+
+    if (!id) {
+      document.getElementById("product").innerHTML = "<p>Missing product id.</p>";
+      throw new Error("Missing product id in URL");
+    }
+
+    fetch("products.json")
+      .then(res => res.json())
+      .then(products => {
+        const p = products.find(x => Number(x.id) === id);
+
+        if (!p) {
+          document.getElementById("product").innerHTML = "<p>Product not found.</p>";
+          return;
+        }
+
+        const views = Number(localStorage.getItem("productDetailViewsCount") || 0);
+        localStorage.setItem("productDetailViewsCount", String(views + 1));
+
+        document.title = p.name;
+
+        document.getElementById("product").innerHTML = `
+          <div class="product-detail">
+            <img class="product-detail-img" src="${p.image}" alt="${p.name}">
+            
+            <div class="product-detail-info">
+              <h1>${p.name}</h1>
+              <p class="price">€${Number(p.price).toFixed(2)}</p>
+              <p class="product-rating">★ ${p.rating ?? "—"} <span>(${p.reviews ?? 0} reviews)</span></p>
+              <p>${p.shortDesc || ""}</p>
+
+              <button id="addBtn" class="shop-btn" type="button"
+                data-id="${p.id}"
+                data-name="${encodeURIComponent(p.name)}"
+                data-price="${Number(p.price)}"
+                data-image="${p.image}"
+              >
+                Add to cart
+              </button>
+            </div>
+          </div>
+        `;
+
+        // Attach AFTER the button exists
+        document.getElementById("addBtn").addEventListener("click", (e) => {
+        const btn = e.currentTarget;
+
+        const id = Number(btn.dataset.id);
+        const name = decodeURIComponent(btn.dataset.name);
+        const price = Number(btn.dataset.price);
+        const image = btn.dataset.image; // <- new
+
+        window.addToCart(id, name, price, image);
+      });
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("product").innerHTML = "<p>Could not load product.</p>";
+      });
+
+    window.updateHeaderCart?.();
+
+    window.addEventListener("pageshow", () => {
+    window.updateHeaderCart?.();
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      window.insertHeader?.();
+
+      const version = localStorage.getItem("shopVersion");
+      const logoLink = document.querySelector(".brand");
+
+      if (logoLink && version) {
+        logoLink.href = `versions/${version}`;
+      }
+
+      window.updateHeaderCart?.();
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const backLink = document.getElementById("backToShopLink");
+      const version = localStorage.getItem("shopVersion");
+
+      if (backLink) {
+        backLink.href = version ? `versions/${version}` : "index.html";
+      }
+    });
+  </script>
+  </body>
+</html>

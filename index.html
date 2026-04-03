@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Research study</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="intro-page">
+      <section class="intro-card">
+        <p class="eyebrow">Research study</p>
+        <h1>Welcome!</h1>
+
+        <p class="lead">
+          You are invited to take part in a short study about online shopping experiences. Please, read the task carefully before starting.
+        </p>
+
+        <div class="task-box">
+          <h2>Your task</h2>
+          <p>
+            Imagine you want to buy a pair of hiking boots for a friend who enjoys hiking.
+          </p>
+          <p>
+            Try to find a suitable pair of boots within a budget of <strong>€150.00</strong>.
+          </p>
+        </div>
+
+        <p>
+          You will be taken to a webshop where you can browse products and complete a purchase.
+        </p>
+
+        <button id="start-btn" class="shop-btn">Start</button>
+
+        <div class="study-note">
+          <p>
+            <strong>Important:</strong> This is <em>not</em> a real shop. You will not be charged and you will not be asked for any payment details.
+          </p>
+
+          <p>
+            Participation is voluntary and anonymous. You may leave at any time by closing the page. By clicking “Start”, you agree to take part in this study and allow your anonymous interaction data to be used for research purposes.
+          </p>
+        </div>
+
+        <p class="privacy-link">
+          <a href="#" onclick="alert('This website is part of a research project conducted for academic purposes. We record anonymous interaction data such as pages visited, time spent, and buttons clicked. No personal data (such as name, email, or payment information) are collected. The data are stored securely and used only for research and educational purposes. You may withdraw at any time by closing the page, and you may request deletion of your data on the debrief page after completing the study.'); return false;">
+            Privacy Notice
+          </a>
+        </p>
+      </section>
+    </main>
+<script type="module">
+  import { db } from './js/firebase.js';
+  import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+  const completed = localStorage.getItem("studyCompleted") === "true";
+  const startBtn = document.getElementById("start-btn");
+
+  if (completed && startBtn) {
+    startBtn.disabled = true;
+    startBtn.textContent = "Study already completed";
+
+    const msg = document.createElement("p");
+    msg.className = "repeat-note";
+    msg.textContent = "This browser has already completed the study. Thank you for your participation.";
+    startBtn.insertAdjacentElement("afterend", msg);
+  }
+
+  startBtn.addEventListener('click', async () => {
+    const completed = localStorage.getItem("studyCompleted") === "true";
+    if (completed) return;
+
+    const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif'];
+
+    const chosen = versions[Math.floor(Math.random() * versions.length)];
+
+    const sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
+
+    localStorage.setItem("sessionStartMs", String(Date.now()));
+    localStorage.setItem("productDetailViewsCount", "0");
+    localStorage.setItem("paginationNextCount", "0");
+    localStorage.setItem("paginationPrevCount", "0");
+    localStorage.setItem("reachedPage2", "false");
+
+    localStorage.setItem('shopVersion', chosen);
+    localStorage.setItem('sessionId', sessionId);
+    localStorage.setItem("popup1Shown", "false");
+    localStorage.setItem("popup1Accepted", "false");
+    localStorage.setItem("popup2Shown", "false");
+    localStorage.setItem("popup2Accepted", "false");
+    localStorage.removeItem("popup1DismissedAt");
+    localStorage.removeItem("popup2Pending");
+    localStorage.setItem("popup3Shown", "false");
+    localStorage.setItem("popup3Accepted", "false");
+    localStorage.removeItem("popup3Pending");
+
+    try {
+      await addDoc(collection(db, "sessions"), {
+        sessionId,
+        shopVersion: chosen,
+        startedAt: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error("Error logging session start:", error);
+    }
+
+    window.location.href = 'versions/' + chosen;
+  });
+</script>
+  </body>
+</html>

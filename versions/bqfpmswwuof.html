@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Trail and Co</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="../js/cart.js" defer></script>
+    <script src="../js/header.js" defer></script>
+  </head>
+
+  <body>
+    <main>
+        <section id="hero">
+          <div class="hero-copy">
+            <h1>Gear up for your next adventure</h1>
+            <p>Quality gear for hiking, travel, and the outdoors</p>
+          </div>
+      </section>
+      
+      <div class="pagination" id="paginationTop">
+        <button id="prevBtnTop" type="button">Previous</button>
+        <span id="pageInfoTop"></span>
+        <button id="nextBtnTop" type="button">Next</button>
+      </div>
+
+      <section>
+        <div id="product-list"></div>
+      </section>
+
+      <!-- Pagination controls -->
+      <div class="pagination">
+        <button id="prevBtn" type="button">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn" type="button">Next</button>
+      </div>
+    </main>
+
+    <div id="upsellOverlay" class="popup-overlay" style="display:none;">
+      <div class="popup-card">
+        <button type="button" id="popupClose" class="popup-close">×</button>
+        <div id="popupContent"></div>
+      </div>
+    </div>
+
+    <script>
+      function incMetric(key) {
+        const n = Number(localStorage.getItem(key) || 0);
+        localStorage.setItem(key, String(n + 1));
+      }
+      function setBool(key, value) {
+        localStorage.setItem(key, value ? "true" : "false");
+      }
+
+      // --- Pagination settings ---
+      let currentPage = 1;
+      const productsPerPage =9; // change this to 6/8 if you want
+      let allProducts = [];
+
+      // Load products dynamically from products.json
+      fetch("../products.json")
+        .then((res) => res.json())
+        .then((products) => {
+          allProducts = products;
+          renderPage();
+        })
+        .catch((err) => {
+          console.error("Failed to load products.json:", err);
+          const container = document.getElementById("product-list");
+          container.innerHTML = "<p>Sorry, products could not be loaded.</p>";
+        });
+
+      function renderPage() {
+        const container = document.getElementById("product-list");
+        container.innerHTML = "";
+
+        const totalPages = Math.ceil(allProducts.length / productsPerPage);
+        if (currentPage >= 2) setBool("reachedPage2", true);
+        const start = (currentPage - 1) * productsPerPage;
+        const end = start + productsPerPage;
+        const pageProducts = allProducts.slice(start, end);
+
+        pageProducts.forEach((p) => {
+          const item = document.createElement("div");
+          item.classList.add("product");
+
+        item.innerHTML = [
+          `<a href="../product.html?id=${p.id}&from=bqfpmswwuof.html">`,
+          `<img src="../${p.image}" alt="${p.name}">`,
+          `</a>`,
+          `<h3><a class="product-link" href="../product.html?id=${p.id}&from=bqfpmswwuof.html">${p.name}</a></h3>`,
+          `<p>€${Number(p.price).toFixed(2)}</p>`,
+          `<button type="button" class="add-to-cart shop-btn" data-id="${p.id}" data-name="${encodeURIComponent(p.name)}" data-price="${Number(p.price)}" data-image="${p.image}">Add to cart</button>`
+        ].join("");
+
+
+          container.appendChild(item);
+        });
+
+
+        // Update UI state
+        // Update page info
+        document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
+        document.getElementById("pageInfoTop").textContent = `Page ${currentPage} of ${totalPages}`;
+
+        // Update button states
+        const prevDisabled = currentPage <= 1;
+        const nextDisabled = currentPage >= totalPages;
+
+        document.getElementById("prevBtn").disabled = prevDisabled;
+        document.getElementById("nextBtn").disabled = nextDisabled;
+
+        document.getElementById("prevBtnTop").disabled = prevDisabled;
+        document.getElementById("nextBtnTop").disabled = nextDisabled;
+      }
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        const totalPages = Math.ceil(allProducts.length / productsPerPage);
+        if (currentPage < totalPages) {
+          incMetric("paginationNextCount");   // ✅ add
+          currentPage++;
+          renderPage();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        if (currentPage > 1) {
+          incMetric("paginationPrevCount");   // ✅ add
+          currentPage--;
+          renderPage();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      document.getElementById("nextBtnTop").addEventListener("click", () => {
+      document.getElementById("nextBtn").click();
+    });
+
+      document.getElementById("prevBtnTop").addEventListener("click", () => {
+      document.getElementById("prevBtn").click();
+    });
+
+      const POPUP1_PRODUCT = {
+        id: 3, // replace if needed
+        name: "CanyonGrip Hiking Boots",
+        price: 179.99,
+        image: "media/products/boots/canyongrip.jpg",
+        displayPriceHtml: `<span class="old-price">€199.99</span>€179.99`
+      };
+
+      const POPUP2_PRODUCT = {
+        id: 2, // replace if needed
+        name: "SummitLite Hiking Boots",
+        price: 159.99, // replace if needed
+        image: "media/products/boots/summitlite.jpg",
+        displayPriceHtml: `€159.99`
+      };
+
+      const POPUP3_PRODUCT = {
+        id: 2,
+        name: "SummitLite Hiking Boots",
+        price: 159.99,
+        image: "media/products/boots/summitlite.jpg",
+        displayPriceHtml: `€159.99`
+      };
+
+      const overlay = document.getElementById("upsellOverlay");
+      const popupContent = document.getElementById("popupContent");
+      const popupClose = document.getElementById("popupClose");
+
+      let popupStage = 0;
+      let popup2Scheduled = false;
+      let popup3Scheduled = false;
+
+      function showPopup(product, stage) {
+        popupStage = stage;
+
+        if (stage === 1) {
+          localStorage.setItem("popup1Shown", "true");
+        } else if (stage === 2) {
+          localStorage.setItem("popup2Shown", "true");
+          localStorage.removeItem("popup2Pending");
+        } else if (stage === 3) {
+          localStorage.setItem("popup3Shown", "true");
+          localStorage.removeItem("popup3Pending");
+        }
+
+        popupContent.innerHTML = `
+          <p class="popup-eyebrow">You may like</p>
+          <img class="popup-img" src="../${product.image}" alt="${product.name}">
+          <h2 class="popup-title">${product.name}</h2>
+          <p class="popup-text">
+            Looking for extra support and durability for tougher trails?
+          </p>
+          <div class="popup-price">${product.displayPriceHtml}</div>
+          <div class="popup-actions">
+            <button type="button" class="shop-btn" id="popupAddBtn">Add to cart</button>
+            <button type="button" class="popup-secondary" id="popupNoBtn">Continue browsing</button>
+          </div>
+        `;
+
+        overlay.style.display = "flex";
+
+        document.getElementById("popupAddBtn").addEventListener("click", () => {
+          window.addToCart(product.id, product.name, product.price, product.image);
+
+          if (stage === 1) {
+            localStorage.setItem("popup1Accepted", "true");
+            localStorage.removeItem("popup2Pending");
+          } else if (stage === 2) {
+            localStorage.setItem("popup2Accepted", "true");
+            localStorage.removeItem("popup3Pending");
+          } else if (stage === 3) {
+            localStorage.setItem("popup3Accepted", "true");
+          }
+
+          closePopup();
+        });
+
+        document.getElementById("popupNoBtn").addEventListener("click", () => {
+          closePopup();
+
+          if (stage === 1) {
+            localStorage.setItem("popup2Pending", "true");
+            schedulePopup2();
+          } else if (stage === 2) {
+            localStorage.setItem("popup3Pending", "true");
+            schedulePopup3();
+          }
+        });
+
+      }
+
+      function closePopup() {
+        overlay.style.display = "none";
+      }
+
+      popupClose.addEventListener("click", () => {
+        closePopup();
+
+        if (popupStage === 1) {
+          localStorage.setItem("popup2Pending", "true");
+          schedulePopup2();
+        } else if (popupStage === 2) {
+          localStorage.setItem("popup3Pending", "true");
+          schedulePopup3();
+        }
+      });
+
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+          closePopup();
+
+          if (popupStage === 1) {
+            localStorage.setItem("popup2Pending", "true");
+            schedulePopup2();
+          } else if (popupStage === 2) {
+            localStorage.setItem("popup3Pending", "true");
+            schedulePopup3();
+          }
+        }
+      });
+
+      function schedulePopup1() {
+        const popup1Shown = localStorage.getItem("popup1Shown") === "true";
+        const popup1Accepted = localStorage.getItem("popup1Accepted") === "true";
+
+        if (popup1Shown || popup1Accepted) return;
+
+        setTimeout(() => {
+          // only show if not already shown/accepted in the meantime
+          const alreadyShown = localStorage.getItem("popup1Shown") === "true";
+          const alreadyAccepted = localStorage.getItem("popup1Accepted") === "true";
+
+          if (!alreadyShown && !alreadyAccepted) {
+            showPopup(POPUP1_PRODUCT, 1);
+          }
+        }, 9000);
+      }
+
+      function schedulePopup2() {
+        if (popup2Scheduled) return;
+
+        const popup2Shown = localStorage.getItem("popup2Shown") === "true";
+        const popup1Accepted = localStorage.getItem("popup1Accepted") === "true";
+        const popup2Pending = localStorage.getItem("popup2Pending") === "true";
+
+        if (popup2Shown || popup1Accepted || !popup2Pending) return;
+
+        popup2Scheduled = true;
+
+        setTimeout(() => {
+          const alreadyShown = localStorage.getItem("popup2Shown") === "true";
+          const popup1AcceptedNow = localStorage.getItem("popup1Accepted") === "true";
+          const stillPending = localStorage.getItem("popup2Pending") === "true";
+
+          if (!alreadyShown && !popup1AcceptedNow && stillPending) {
+            showPopup(POPUP2_PRODUCT, 2);
+          }
+        }, 9000);
+      }
+
+      function schedulePopup3() {
+        if (popup3Scheduled) return;
+
+        const popup3Shown = localStorage.getItem("popup3Shown") === "true";
+        const popup2Accepted = localStorage.getItem("popup2Accepted") === "true";
+        const popup3Pending = localStorage.getItem("popup3Pending") === "true";
+
+        if (popup3Shown || popup2Accepted || !popup3Pending) return;
+
+        popup3Scheduled = true;
+
+        setTimeout(() => {
+          const alreadyShown = localStorage.getItem("popup3Shown") === "true";
+          const popup2AcceptedNow = localStorage.getItem("popup2Accepted") === "true";
+          const stillPending = localStorage.getItem("popup3Pending") === "true";
+
+          if (!alreadyShown && !popup2AcceptedNow && stillPending) {
+            showPopup(POPUP3_PRODUCT, 3);
+          }
+        }, 15000);
+      }
+
+      document.getElementById("product-list").addEventListener("click", (e) => {
+        const btn = e.target.closest(".add-to-cart");
+        if (!btn) return;
+
+        const id = Number(btn.dataset.id);
+        const name = decodeURIComponent(btn.dataset.name);
+        const price = Number(btn.dataset.price);
+
+        // cart.js defines window.addToCart
+        const image = btn.dataset.image;
+        window.addToCart(id, name, price, image);
+      });
+
+      window.updateHeaderCart?.();
+
+      window.addEventListener("pageshow", () => {
+      window.updateHeaderCart?.();
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+      window.insertHeader?.();
+      window.updateHeaderCart?.();
+      });
+
+      schedulePopup1();
+      schedulePopup2();
+      schedulePopup3();
+    </script>
+  </body>
+
+</html>

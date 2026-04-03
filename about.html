@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About us</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="js/header.js" defer></script>
+  <script src="js/cart.js" defer></script>
+</head>
+<body>
+  <main class="about-page">
+    <section class="about-card">
+        <p class="eyebrow">About us</p>
+        <h1>About Trail &amp; Co.</h1>
+        <p>
+        At Trail &amp; Co., we love the outdoors and the simple joy of getting outside, whether that means a long hike in the mountains, a weekend walk through the woods, or a short trip with friends. Our shop is inspired by that spirit of adventure and by the idea that good gear should help you feel prepared, comfortable, and ready to explore.
+        </p>
+
+        <p>
+        We offer a selection of hiking boots, jackets, backpacks, and outdoor essentials chosen with practicality and everyday use in mind. We want shopping for outdoor gear to feel straightforward and approachable, whether you are an experienced hiker or just starting to discover what you need for your next adventure.
+        </p>
+
+        <p>
+        Trail &amp; Co. is built around reliability, simplicity, and a love of the outdoors. Our goal is to make it easier to find useful, comfortable products so you can spend less time worrying about equipment and more time enjoying the journey.
+        </p>
+    </section>
+  </main>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      window.insertHeader?.();
+      window.updateHeaderCart?.();
+    });
+
+    window.addEventListener("pageshow", () => {
+      window.updateHeaderCart?.();
+    });
+  </script>
+</body>
+</html>
