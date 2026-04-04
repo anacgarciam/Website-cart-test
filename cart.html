@@ -96,6 +96,7 @@
         sessionId,
         shopVersion,
         timestamp: new Date().toISOString(),
+        timestampLocal: new Date().toLocaleString("sv-SE", { timeZone: "Europe/Paris" }),
         cart,
         timeSpentSeconds,
         cartTotal: Number(cartTotal.toFixed(2)),
