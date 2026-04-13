@@ -1,7 +1,18 @@
 // Randomly pick one shop version and save it in localStorage
 function assignShopVersion() {
-  const versions = ['shopA.html', 'shopB.html', 'shopC.html', 'shopD.html'];
+  let existing = localStorage.getItem('shopVersion');
+
+  if (existing) {
+    return existing; // 🔒 reuse existing version
+  }
+
+  const versions = [
+  'awgxgqqnaen.html',   // sneak
+  'bqfpmswwuof.html',   // nagging
+  'crsvmfzjiif.html'    // control
+  ];
   const chosen = versions[Math.floor(Math.random() * versions.length)];
+
   localStorage.setItem('shopVersion', chosen);
   return chosen;
 }

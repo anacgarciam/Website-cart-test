@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Research study</title>
     <link rel="stylesheet" href="style.css">
+    <script src="js/version.js" defer></script>
   </head>
   <body>
     <main class="intro-page">
@@ -41,6 +42,9 @@
           <p>
             Participation is voluntary and anonymous. You may leave at any time by closing the page. By clicking “Start”, you agree to take part in this study and allow your anonymous interaction data to be used for research purposes.
           </p>
+          <p>
+            This study is conducted as part of the TCLoc Master’s programme in Technical Communication and Localization.
+          </p>
         </div>
 
         <p class="privacy-link">
@@ -51,6 +55,7 @@
       </section>
     </main>
 <script type="module">
+
   import { db } from './js/firebase.js';
   import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
@@ -71,9 +76,7 @@
     const completed = localStorage.getItem("studyCompleted") === "true";
     if (completed) return;
 
-    const versions = ['awgxgqqnaen.html', 'bqfpmswwuof.html', 'crsvmfzjiif'];
-
-    const chosen = versions[Math.floor(Math.random() * versions.length)];
+    const chosen = window.assignShopVersion();
 
     const sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
 
