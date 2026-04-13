@@ -19,7 +19,7 @@
     <h1>Thank you for your participation!</h1>
 
     <p>
-      Your session has been recorded successfully. You may now close this page.
+      Your session has been recorded successfully. Before closing the page, you may answer a few short final questions.
     </p>
 
     <p>
@@ -30,6 +30,38 @@
     <p>
       All data collected are anonymous and used only for research purposes.
     </p>
+
+    <div class="questionnaire-box">
+      <h2>Final questions</h2>
+
+      <label for="easeQuestion">How easy or difficult was the task?</label>
+      <select id="easeQuestion" required>
+        <option value="">Select an option</option>
+        <option value="1">Very easy</option>
+        <option value="2">Easy</option>
+        <option value="3">Neither easy nor difficult</option>
+        <option value="4">Difficult</option>
+        <option value="5">Very difficult</option>
+      </select>
+
+      <label for="unusualQuestion">Did you notice anything unusual or confusing?</label>
+      <select id="unusualQuestion" required>
+        <option value="">Select an option</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+
+      <label for="commentBox">Optional: Would you like to leave a comment about your experience?</label>
+      <textarea
+        id="commentBox"
+        rows="4"
+        maxlength="500"
+        placeholder="You may leave a short comment here."
+      ></textarea>
+
+      <button id="submitResponsesBtn" class="shop-btn" type="button">Submit answers</button>
+      <p id="responsesStatus"></p>
+    </div>
 
     <div class="thankyou-actions">
       <button id="deleteBtn" class="secondary-btn">Delete my data</button>
@@ -59,65 +91,114 @@
   </section>
 </main>
 
-  <script type="module">
-    import { db } from "./js/firebase.js";
-    import {
-      collection,
-      query,
-      where,
-      getDocs,
-      deleteDoc
-    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+<script type="module">
+  import { db } from "./js/firebase.js";
+  import {
+    collection,
+    query,
+    where,
+    getDocs,
+    deleteDoc,
+    addDoc
+  } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-    const deleteBtn = document.getElementById("deleteBtn");
-    const confirmBox = document.getElementById("deleteConfirmBox");
-    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
-    const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
-    const statusText = document.getElementById("deleteStatus");
+  localStorage.setItem("studyCompleted", "true");
 
-    // First click: only show the custom confirmation box
-    deleteBtn.addEventListener("click", () => {
-      confirmBox.style.display = "block";
-      deleteBtn.style.display = "none";
-    });
+  const deleteBtn = document.getElementById("deleteBtn");
+  const confirmBox = document.getElementById("deleteConfirmBox");
+  const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+  const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+  const statusText = document.getElementById("deleteStatus");
 
-    // If user changes their mind
-    cancelDeleteBtn.addEventListener("click", () => {
-      confirmBox.style.display = "none";
-      deleteBtn.style.display = "inline-block";
-    });
+  const easeQuestion = document.getElementById("easeQuestion");
+  const unusualQuestion = document.getElementById("unusualQuestion");
+  const commentBox = document.getElementById("commentBox");
+  const submitResponsesBtn = document.getElementById("submitResponsesBtn");
+  const responsesStatus = document.getElementById("responsesStatus");
 
-    // Only this button actually deletes the data
-    confirmDeleteBtn.addEventListener("click", async () => {
-      const sessionId = localStorage.getItem("sessionId");
+  function sanitizeComment(input) {
+    return input
+      .replace(/[\u0000-\u001F\u007F]/g, "")
+      .trim()
+      .slice(0, 500);
+  }
 
-      if (!sessionId) {
-        statusText.textContent = "No session data found.";
-        return;
-      }
+  submitResponsesBtn.addEventListener("click", async () => {
+    submitResponsesBtn.disabled = true;
+    const ease = easeQuestion.value;
+    const unusual = unusualQuestion.value;
+    const comment = sanitizeComment(commentBox.value);
 
-      try {
-        const collections = ["sessions", "orders"];
+    if (!ease || !unusual) {
+      responsesStatus.textContent = "Please answer the two required questions.";
+      submitResponsesBtn.disabled = false;
+      return;
+    }
 
-        for (const col of collections) {
-          const q = query(collection(db, col), where("sessionId", "==", sessionId));
-          const snapshot = await getDocs(q);
+    try {
+        await addDoc(collection(db, "responses"), {
+          sessionId: localStorage.getItem("sessionId") || "missing_session",
+          shopVersion: localStorage.getItem("shopVersion") || "unknown",
+          easeQuestion: ease,
+          unusualQuestion: unusual,
+          comment: comment,
+          timestamp: new Date().toISOString()
+        });
 
-          const deletions = [];
-          snapshot.forEach(doc => deletions.push(deleteDoc(doc.ref)));
-          await Promise.all(deletions);
-        }
-
-        statusText.textContent = "✅ Your data has been deleted.";
-        localStorage.clear();
-        confirmBox.style.display = "none";
+        responsesStatus.textContent = "✅ Your answers have been saved. Thank you.";
+        submitResponsesBtn.textContent = "Submitted";
+        submitResponsesBtn.disabled = true;
+        easeQuestion.disabled = true;
+        unusualQuestion.disabled = true;
+        commentBox.disabled = true;
       } catch (error) {
-        console.error("Error deleting data:", error);
-        statusText.textContent = "⚠️ Could not delete data. Please try again.";
+        console.error("Error saving responses:", error);
+        responsesStatus.textContent = "⚠️ Could not save your answers. Please try again.";
+        submitResponsesBtn.disabled = false;
       }
     });
 
-localStorage.setItem("studyCompleted", "true");
+  // First click: only show the custom confirmation box
+  deleteBtn.addEventListener("click", () => {
+    confirmBox.style.display = "block";
+    deleteBtn.style.display = "none";
+  });
+
+  // If user changes their mind
+  cancelDeleteBtn.addEventListener("click", () => {
+    confirmBox.style.display = "none";
+    deleteBtn.style.display = "inline-block";
+  });
+
+  // Only this button actually deletes the data
+  confirmDeleteBtn.addEventListener("click", async () => {
+    const sessionId = localStorage.getItem("sessionId");
+
+    if (!sessionId) {
+      statusText.textContent = "No session data found.";
+      return;
+    }
+
+    try {
+      const collections = ["sessions", "orders", "responses"];
+
+      for (const col of collections) {
+        const q = query(collection(db, col), where("sessionId", "==", sessionId));
+        const snapshot = await getDocs(q);
+
+        const deletions = [];
+        snapshot.forEach(doc => deletions.push(deleteDoc(doc.ref)));
+        await Promise.all(deletions);
+      }
+
+      statusText.textContent = "✅ Your data has been deleted.";
+      localStorage.clear();
+      confirmBox.style.display = "none";
+    } catch (error) {
+      console.error("Error deleting data:", error);
+      statusText.textContent = "⚠️ Could not delete data. Please try again.";
+    }
+  });
 </script>
 </body>
 </html>

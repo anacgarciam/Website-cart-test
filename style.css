@@ -923,3 +923,44 @@ h4 {
   gap: 10px;
   flex-wrap: wrap;
 }
+
+
+.questionnaire-box {
+  margin-top: 28px;
+  text-align: left;
+  padding: 18px;
+  border: 1px solid #dfe7f0;
+  border-radius: 12px;
+  background: #f8fbfd;
+}
+
+.questionnaire-box h2 {
+  margin-bottom: 14px;
+}
+
+.questionnaire-box label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.questionnaire-box select,
+.questionnaire-box textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #dfe7f0;
+  border-radius: 10px;
+  font: inherit;
+  background: #fff;
+}
+
+.questionnaire-box textarea {
+  resize: vertical;
+}
+
+.questionnaire-box .shop-btn {
+  margin-top: 16px;
+}
