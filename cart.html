@@ -93,6 +93,7 @@
 
     try {
       await addDoc(collection(db, "orders"), {
+        source: localStorage.getItem("participantSource") || "unknown",
         sessionId,
         shopVersion,
         timestamp: new Date().toISOString(),
