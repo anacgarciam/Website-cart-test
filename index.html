@@ -56,6 +56,13 @@
     </main>
 <script type="module">
 
+  const params = new URLSearchParams(window.location.search);
+  const source = params.get("source");
+
+  if (source) {
+    localStorage.setItem("participantSource", source);
+  }
+
   import { db } from './js/firebase.js';
   import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
@@ -102,6 +109,7 @@
       await addDoc(collection(db, "sessions"), {
         sessionId,
         shopVersion: chosen,
+        source: localStorage.getItem("participantSource") || "unknown",
         startedAt: new Date().toISOString()
       });
     } catch (error) {

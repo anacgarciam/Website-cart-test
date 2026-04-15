@@ -137,6 +137,7 @@
 
     try {
         await addDoc(collection(db, "responses"), {
+          source: localStorage.getItem("participantSource") || "unknown",
           sessionId: localStorage.getItem("sessionId") || "missing_session",
           shopVersion: localStorage.getItem("shopVersion") || "unknown",
           easeQuestion: ease,

@@ -1,3 +1,8 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 * {
     box-sizing: border-box;
     font-family: 'Arial',sans-serif;
@@ -579,6 +584,7 @@ h4 {
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
+  box-sizing: border-box;
 }
 
 .intro-card {
