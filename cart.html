@@ -93,9 +93,12 @@
 
     try {
       await addDoc(collection(db, "orders"), {
-        source: localStorage.getItem("participantSource") || "unknown",
         sessionId,
         shopVersion,
+        source: localStorage.getItem("participantSource") || "unknown",
+        prolificPid: localStorage.getItem("prolificPid") || "",
+        prolificStudyId: localStorage.getItem("prolificStudyId") || "",
+        prolificSessionId: localStorage.getItem("prolificSessionId") || "",
         timestamp: new Date().toISOString(),
         timestampLocal: new Date().toLocaleString("sv-SE", { timeZone: "Europe/Paris" }),
         cart,

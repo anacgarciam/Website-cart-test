@@ -19,7 +19,7 @@
     <h1>Thank you for your participation!</h1>
 
     <p>
-      Your session has been recorded successfully. Before closing the page, you may answer a few short final questions.
+      Your session has been recorded successfully. Before closing the page, you may answer a few short final questions. If you joined via Prolific, you will be able to return there after finishing.
     </p>
 
     <p>
@@ -83,6 +83,10 @@
       <p id="deleteStatus"></p>
     </div>
 
+    <p id="prolificReturnWrap" style="display: none; margin-top: 18px;">
+      <a id="prolificReturnBtn" class="shop-btn" href="#">Return to Prolific</a>
+    </p>
+
     <p class="contact-note">
       If you have any questions, feel free to contact:
       <br>
@@ -115,6 +119,13 @@
   const commentBox = document.getElementById("commentBox");
   const submitResponsesBtn = document.getElementById("submitResponsesBtn");
   const responsesStatus = document.getElementById("responsesStatus");
+  const prolificReturnWrap = document.getElementById("prolificReturnWrap");
+  const prolificReturnBtn = document.getElementById("prolificReturnBtn");
+  const prolificPid = localStorage.getItem("prolificPid");
+
+  if (prolificPid) {
+    prolificReturnBtn.href = "https://app.prolific.com/submissions/complete?cc=C6E2AAVU";
+  }
 
   function sanitizeComment(input) {
     return input
@@ -137,9 +148,12 @@
 
     try {
         await addDoc(collection(db, "responses"), {
-          source: localStorage.getItem("participantSource") || "unknown",
           sessionId: localStorage.getItem("sessionId") || "missing_session",
           shopVersion: localStorage.getItem("shopVersion") || "unknown",
+          source: localStorage.getItem("participantSource") || "unknown",
+          prolificPid: localStorage.getItem("prolificPid") || "",
+          prolificStudyId: localStorage.getItem("prolificStudyId") || "",
+          prolificSessionId: localStorage.getItem("prolificSessionId") || "",
           easeQuestion: ease,
           unusualQuestion: unusual,
           comment: comment,
@@ -152,6 +166,10 @@
         easeQuestion.disabled = true;
         unusualQuestion.disabled = true;
         commentBox.disabled = true;
+
+        if (prolificPid) {
+          prolificReturnWrap.style.display = "block";
+        }
       } catch (error) {
         console.error("Error saving responses:", error);
         responsesStatus.textContent = "⚠️ Could not save your answers. Please try again.";

@@ -63,6 +63,20 @@
     localStorage.setItem("participantSource", source);
   }
 
+  const prolificPid = params.get("PROLIFIC_PID");
+  const prolificStudyId = params.get("STUDY_ID");
+  const prolificSessionId = params.get("SESSION_ID");
+
+  if (prolificPid) {
+    localStorage.setItem("prolificPid", prolificPid);
+  }
+  if (prolificStudyId) {
+    localStorage.setItem("prolificStudyId", prolificStudyId);
+  }
+  if (prolificSessionId) {
+    localStorage.setItem("prolificSessionId", prolificSessionId);
+  }
+
   import { db } from './js/firebase.js';
   import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
@@ -110,6 +124,9 @@
         sessionId,
         shopVersion: chosen,
         source: localStorage.getItem("participantSource") || "unknown",
+        prolificPid: localStorage.getItem("prolificPid") || "",
+        prolificStudyId: localStorage.getItem("prolificStudyId") || "",
+        prolificSessionId: localStorage.getItem("prolificSessionId") || "",
         startedAt: new Date().toISOString()
       });
     } catch (error) {
