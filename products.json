@@ -8,7 +8,7 @@
     "tags": ["hiking", "footwear"],
     "rating": 4.3,
     "reviews": 189,
-    "shortDesc": "Lighter build, premium cushioning."
+    "shortDesc": "Durable hiking boots designed for outdoor trails, with supportive soles and a comfortable fit for day hikes and longer walks."
   },
   {
     "id": 3,
@@ -19,7 +19,7 @@
     "tags": ["hiking", "footwear"],
     "rating": 4.3,
     "reviews": 189,
-    "shortDesc": "Durable with solid traction."
+    "shortDesc": "Durable hiking boots designed for outdoor trails, with supportive soles and a comfortable fit for day hikes and longer walks."
   },
   {
     "id": 4,
@@ -117,9 +117,9 @@
     "image": "media/products/boots/trailstride.jpg",
     "category": "boots",
     "tags": ["hiking", "footwear"],
-    "rating": 4.6,
-    "reviews": 312,
-    "shortDesc": "Water-resistant, grippy sole, all-day comfort."
+    "rating": 4.3,
+    "reviews": 189,
+    "shortDesc": "Durable hiking boots designed for outdoor trails, with supportive soles and a comfortable fit for day hikes and longer walks."
   },
   {
     "id": 13,
